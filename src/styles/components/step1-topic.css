@@ -1,0 +1,901 @@
+/* components/step1-topic.css - Updated styles for new form structure */
+
+/* Structured Story Display */
+.structured-story {
+    margin: var(--spacing-lg) 0;
+    padding: var(--spacing-lg);
+    background: var(--gray-50);
+    border-radius: var(--border-radius-md);
+    border: 1px solid var(--gray-200);
+}
+
+.paragraph {
+    margin-bottom: var(--spacing-lg);
+    padding: var(--spacing-md);
+    background: white;
+    border-radius: var(--border-radius);
+    border-left: 4px solid var(--primary-color);
+}
+
+.paragraph:last-child {
+    margin-bottom: 0;
+}
+
+.paragraph[data-paragraph]::before {
+    content: "Paragraph " attr(data-paragraph);
+    display: block;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.sentence {
+    display: inline;
+    margin-right: var(--spacing-xs);
+    line-height: var(--line-height-relaxed);
+    position: relative;
+}
+
+.sentence:hover {
+    background-color: rgba(102, 126, 234, 0.1);
+    border-radius: var(--border-radius-sm);
+    padding: 2px 4px;
+    margin: -2px -4px;
+}
+
+.phonics-highlight {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--success-color);
+    color: white;
+    border-radius: var(--border-radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    width: 20px;
+    height: 20px;
+    margin-left: var(--spacing-xs);
+    cursor: help;
+    vertical-align: middle;
+}
+
+.phonics-highlight:hover {
+    background: var(--success-color-dark);
+    transform: scale(1.1);
+}
+
+/* Legacy Story Display */
+.legacy-story {
+    margin: var(--spacing-lg) 0;
+    padding: var(--spacing-lg);
+    background: white;
+    border-radius: var(--border-radius-md);
+    border: 1px solid var(--gray-200);
+    line-height: var(--line-height-relaxed);
+}
+
+.legacy-story p {
+    margin-bottom: var(--spacing-md);
+}
+
+.legacy-story p:last-child {
+    margin-bottom: 0;
+}
+
+/* Theme textarea styling */
+#theme {
+    min-height: 80px;
+    resize: vertical;
+    font-family: var(--font-family);
+    line-height: var(--line-height-normal);
+}
+
+/* Form validation styling */
+#theme:invalid {
+    border-color: var(--error-color);
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+#theme:valid {
+    border-color: var(--success-color);
+}
+
+/* Randomize button styling */
+.btn-secondary {
+    background: var(--gray-100);
+    color: var(--gray-700);
+    border: 1px solid var(--gray-300);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background: var(--gray-200);
+    border-color: var(--gray-400);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-secondary:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.btn-secondary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: var(--gray-100);
+    border-color: var(--gray-300);
+    transform: none;
+    box-shadow: none;
+}
+
+/* Form actions layout */
+.form-actions {
+    display: flex;
+    gap: var(--spacing-md);
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: var(--spacing-xl);
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid var(--gray-200);
+}
+
+/* Responsive form actions */
+@media (max-width: 768px) {
+    .form-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn-secondary,
+    .btn-primary {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Enhanced form row styling */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+}
+
+@media (max-width: 768px) {
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+}
+
+/* Enhanced form group styling */
+.form-group label {
+    display: block;
+    margin-bottom: var(--spacing-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--gray-700);
+    font-size: var(--font-size-sm);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid var(--gray-300);
+    border-radius: var(--border-radius);
+    font-size: var(--font-size-base);
+    font-family: var(--font-family);
+    transition: all var(--transition-normal);
+    background: white;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: var(--gray-400);
+    font-style: italic;
+}
+
+/* Preview section enhancements */
+.story-preview {
+    margin-top: var(--spacing-2xl);
+    padding: var(--spacing-xl);
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+    border-radius: var(--border-radius-lg);
+    border: 1px solid rgba(102, 126, 234, 0.1);
+}
+
+.story-preview h3 {
+    margin: 0 0 var(--spacing-lg) 0;
+    color: var(--primary-color);
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    text-align: center;
+}
+
+.story-content {
+    background: white;
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-xl);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: var(--spacing-lg);
+}
+
+.story-content h4 {
+    margin: 0 0 var(--spacing-lg) 0;
+    color: var(--gray-900);
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    text-align: center;
+    padding-bottom: var(--spacing-md);
+    border-bottom: 2px solid var(--primary-color);
+}
+
+/* Preview actions */
+.preview-actions {
+    text-align: center;
+}
+
+.preview-actions button {
+    background: var(--primary-gradient);
+    color: white;
+    border: none;
+    padding: var(--spacing-md) var(--spacing-xl);
+    border-radius: var(--border-radius-md);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    box-shadow: var(--shadow-primary);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.preview-actions button:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-primary-lg);
+}
+
+.preview-actions button:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-primary);
+}
+
+
+/* Add these styles to your step1-topic.css file */
+
+/* Generating state container */
+.generating-state {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-md);
+    background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+    border-radius: var(--border-radius-md);
+    border: 2px solid var(--primary-light);
+    animation: pulse-border 2s infinite;
+}
+
+.generating-text {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    color: var(--gray-700);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.generating-text::before {
+    content: '⏳';
+    animation: spin 2s linear infinite;
+}
+
+/* Cancel button styling */
+.btn-cancel {
+    background: linear-gradient(135deg, var(--error-color), #dc2626);
+    color: white;
+    border: none;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border-radius: var(--border-radius-md);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    flex-shrink: 0;
+}
+
+.btn-cancel:hover {
+    background: linear-gradient(135deg, #dc2626, #b91c1c);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3);
+}
+
+.btn-cancel:active {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
+}
+
+/* Animations */
+@keyframes pulse-border {
+    0%, 100% {
+        border-color: var(--primary-light);
+    }
+    50% {
+        border-color: var(--primary-color);
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Form actions improvements */
+.form-actions {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: var(--spacing-lg);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--gray-200);
+}
+
+/* Ensure generating state takes full width */
+.form-actions .generating-state {
+    flex: 1;
+    min-width: 300px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .generating-state {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+        text-align: center;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .form-actions .generating-state {
+        min-width: unset;
+        width: 100%;
+    }
+
+    .btn-cancel {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+
+
+/* Add to step5-complete.css - Educational Quality Report Styling */
+
+/* Quality Section Container */
+.step5-complete-quality-section {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border: 2px solid var(--primary-color);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-xl);
+    margin-top: var(--spacing-lg);
+}
+
+.step5-complete-quality-section h3 {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+    font-size: var(--font-size-xl);
+}
+
+/* Quality Overview */
+.quality-overview {
+    margin-bottom: var(--spacing-xl);
+}
+
+.quality-overall-score {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+    padding: var(--spacing-lg);
+    background: white;
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-md);
+}
+
+.score-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    font-weight: var(--font-weight-bold);
+    flex-shrink: 0;
+}
+
+.score-value {
+    font-size: 24px;
+    line-height: 1;
+}
+
+.score-suffix {
+    font-size: 14px;
+    position: absolute;
+    top: 35px;
+    right: 8px;
+}
+
+.score-excellent {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+}
+
+.score-good {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+}
+
+.score-acceptable {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: white;
+}
+
+.score-needs-improvement {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+}
+
+.score-details {
+    flex: 1;
+}
+
+.score-assessment {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    color: var(--gray-800);
+    margin-bottom: var(--spacing-sm);
+}
+
+.score-status {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.status-item {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius);
+}
+
+.status-good {
+    background: #ecfdf5;
+    color: #065f46;
+}
+
+.status-warning {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+/* Quality Scores Grid */
+.quality-scores {
+    margin-bottom: var(--spacing-xl);
+}
+
+.quality-scores h4 {
+    font-size: var(--font-size-lg);
+    color: var(--gray-800);
+    margin-bottom: var(--spacing-md);
+}
+
+.scores-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-md);
+}
+
+.score-item {
+    background: white;
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--gray-200);
+    box-shadow: var(--shadow-sm);
+}
+
+.score-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+}
+
+.score-icon {
+    font-size: var(--font-size-lg);
+}
+
+.score-label {
+    font-weight: var(--font-weight-semibold);
+    color: var(--gray-800);
+    font-size: var(--font-size-sm);
+}
+
+.score-bar-container {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-xs);
+}
+
+.score-bar {
+    flex: 1;
+    height: 8px;
+    background: var(--gray-200);
+    border-radius: var(--border-radius-full);
+    overflow: hidden;
+}
+
+.score-fill {
+    height: 100%;
+    border-radius: var(--border-radius-full);
+    transition: width var(--transition-normal);
+}
+
+.score-percentage {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--gray-600);
+    min-width: 35px;
+    text-align: right;
+}
+
+.score-description {
+    font-size: var(--font-size-xs);
+    color: var(--gray-500);
+    line-height: var(--line-height-tight);
+}
+
+/* Phonics Analysis */
+.phonics-analysis {
+    margin-bottom: var(--spacing-xl);
+}
+
+.phonics-analysis h4 {
+    font-size: var(--font-size-lg);
+    color: var(--gray-800);
+    margin-bottom: var(--spacing-md);
+}
+
+.phonics-details {
+    background: white;
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius);
+    border-left: 4px solid var(--green-500);
+}
+
+.phonics-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+}
+
+.phonics-label {
+    font-weight: var(--font-weight-semibold);
+    color: var(--gray-700);
+    min-width: 120px;
+}
+
+.phonics-value {
+    color: var(--gray-800);
+}
+
+.phonics-pattern {
+    background: var(--green-100);
+    color: var(--green-800);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius);
+    font-family: monospace;
+}
+
+.phonics-integration {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius);
+    font-weight: var(--font-weight-medium);
+    text-transform: uppercase;
+    font-size: var(--font-size-xs);
+}
+
+.integration-natural {
+    background: #ecfdf5;
+    color: #065f46;
+}
+
+.integration-forced {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.integration-insufficient {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.integration-unknown {
+    background: var(--gray-100);
+    color: var(--gray-600);
+}
+
+.phonics-words {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.phonics-word-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+    margin-top: var(--spacing-xs);
+}
+
+.phonics-word {
+    background: var(--green-100);
+    color: var(--green-800);
+    padding: 2px var(--spacing-xs);
+    border-radius: var(--border-radius);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+}
+
+/* Grade Level Analysis */
+.grade-level-analysis {
+    margin-bottom: var(--spacing-xl);
+}
+
+.grade-level-analysis h4 {
+    font-size: var(--font-size-lg);
+    color: var(--gray-800);
+    margin-bottom: var(--spacing-md);
+}
+
+.grade-analysis-grid {
+    background: white;
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius);
+    border-left: 4px solid var(--blue-500);
+}
+
+.analysis-item {
+    margin-bottom: var(--spacing-sm);
+}
+
+.analysis-label {
+    font-weight: var(--font-weight-semibold);
+    color: var(--gray-700);
+    display: block;
+    margin-bottom: var(--spacing-xs);
+}
+
+.analysis-value {
+    color: var(--gray-800);
+}
+
+.analysis-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.analysis-issue {
+    font-size: var(--font-size-sm);
+    color: var(--orange-700);
+    background: var(--orange-50);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius);
+}
+
+/* Educational Recommendations */
+.educational-recommendations h4 {
+    font-size: var(--font-size-lg);
+    color: var(--gray-800);
+    margin-bottom: var(--spacing-md);
+}
+
+.insights-section {
+    background: white;
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius);
+    margin-bottom: var(--spacing-md);
+}
+
+.insights-section h5 {
+    font-size: var(--font-size-base);
+    margin: 0 0 var(--spacing-sm) 0;
+    font-weight: var(--font-weight-semibold);
+}
+
+.strengths {
+    border-left: 4px solid var(--green-500);
+}
+
+.strengths h5 {
+    color: var(--green-700);
+}
+
+.issues {
+    border-left: 4px solid var(--orange-500);
+}
+
+.issues h5 {
+    color: var(--orange-700);
+}
+
+.recommendations {
+    border-left: 4px solid var(--blue-500);
+}
+
+.recommendations h5 {
+    color: var(--blue-700);
+}
+
+.insights-section ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.insights-section li {
+    padding: var(--spacing-xs) 0;
+    border-bottom: 1px solid var(--gray-100);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-relaxed);
+}
+
+.insights-section li:last-child {
+    border-bottom: none;
+}
+
+.strength-item {
+    color: var(--green-700);
+}
+
+.issue-item {
+    color: var(--orange-700);
+}
+
+.recommendation-item {
+    color: var(--blue-700);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .quality-overall-score {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--spacing-md);
+    }
+
+    .scores-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .phonics-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-xs);
+    }
+
+    .phonics-label {
+        min-width: auto;
+    }
+}
+
+
+/* Add these styles to step1-topic.css for the updated preview-actions */
+
+/* Update preview actions to use flexbox layout */
+.preview-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-lg);
+    flex-wrap: wrap;
+}
+
+/* Base button styles (shared) */
+.preview-actions button {
+    border: none;
+    padding: var(--spacing-md) var(--spacing-xl);
+    border-radius: var(--border-radius-md);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    flex-shrink: 0;
+    min-width: 160px;
+    justify-content: center;
+}
+
+.preview-actions button:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+    transform: none !important;
+}
+
+/* Regenerate button styling (warning/orange theme to match other regenerate buttons) */
+.preview-actions .btn-regenerate {
+    background: linear-gradient(135deg, var(--warning-color), var(--warning-dark));
+    color: white;
+    box-shadow: 0 4px 15px rgba(255, 152, 0, 0.2);
+}
+
+.preview-actions .btn-regenerate:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 152, 0, 0.3);
+}
+
+/* Continue/Save button styling (primary/success theme) */
+.preview-actions .btn-primary {
+    background: linear-gradient(135deg, var(--success-color), var(--success-dark));
+    color: white;
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.2);
+}
+
+.preview-actions .btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3);
+}
+
+.preview-actions .btn-primary:active,
+.preview-actions .btn-regenerate:active {
+    transform: translateY(0);
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .preview-actions {
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+
+    .preview-actions button {
+        width: 100%;
+        min-width: unset;
+    }
+}

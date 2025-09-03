@@ -1,0 +1,390 @@
+/* ==========================================================================
+   WIZARD PROGRESS COMPONENT - Progress indicator for story creation wizard
+   ========================================================================== */
+
+/* Root Container */
+wizard-progress {
+    display: block;
+    background: var(--primary-gradient);
+    color: white;
+    padding: var(--spacing-xl);
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0; /* Prevent progress bar from shrinking */
+    width: 100%;
+}
+
+.wizard-progress-root {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Header Section */
+.wizard-progress-header {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+}
+
+.wizard-progress-title {
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-sm);
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.wizard-progress-subtitle {
+    font-size: var(--font-size-lg);
+    opacity: 0.9;
+    margin-bottom: 0;
+    color: white;
+    font-weight: var(--font-weight-normal);
+}
+
+/* Progress Bar */
+.wizard-progress-bar {
+    height: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: var(--border-radius);
+    margin-bottom: var(--spacing-md);
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+.wizard-progress-fill {
+    height: 100%;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: var(--border-radius);
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    min-width: 8px; /* Ensure visibility even at 0% */
+}
+
+.wizard-progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    animation: shimmer 2s infinite;
+}
+
+/* Progress Info */
+.wizard-progress-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-xl);
+    font-size: var(--font-size-sm);
+    opacity: 0.9;
+}
+
+.wizard-progress-step-text {
+    font-weight: var(--font-weight-medium);
+}
+
+.wizard-progress-completion-text {
+    font-weight: var(--font-weight-medium);
+}
+
+/* Step Cards Container */
+.wizard-progress-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-md);
+    width: 100%;
+}
+
+/* Individual Step Card */
+.wizard-progress-step-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    transition: all var(--transition-normal);
+    border: 2px solid transparent;
+    cursor: default;
+    position: relative;
+    backdrop-filter: blur(10px);
+    min-height: 80px; /* Consistent card height */
+    box-sizing: border-box;
+}
+
+.wizard-progress-step-card--clickable {
+    cursor: pointer;
+}
+
+.wizard-progress-step-card--clickable:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+}
+
+.wizard-progress-step-card--current {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: scale(1.02);
+    box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
+}
+
+.wizard-progress-step-card--completed {
+    background: rgba(76, 175, 80, 0.2);
+    border-color: rgba(76, 175, 80, 0.5);
+}
+
+.wizard-progress-step-card--upcoming {
+    opacity: 0.7;
+}
+
+/* Step Number Circle */
+.wizard-progress-step-number {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--border-radius-full);
+    background: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-lg);
+    flex-shrink: 0;
+    transition: all var(--transition-normal);
+}
+
+.wizard-progress-step-card--current .wizard-progress-step-number {
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--primary-color);
+    transform: scale(1.1);
+}
+
+.wizard-progress-step-card--completed .wizard-progress-step-number {
+    background: var(--success-color);
+    color: white;
+}
+
+/* Step Content */
+.wizard-progress-step-content {
+    flex: 1;
+    min-width: 0; /* Allow text truncation */
+}
+
+.wizard-progress-step-name {
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-base);
+    margin-bottom: var(--spacing-xs);
+    color: white;
+    line-height: var(--line-height-tight);
+}
+
+.wizard-progress-step-description {
+    font-size: var(--font-size-sm);
+    opacity: 0.8;
+    color: white;
+    line-height: var(--line-height-normal);
+}
+
+/* Step Check Mark */
+.wizard-progress-step-check {
+    width: 24px;
+    height: 24px;
+    background: var(--success-color);
+    border-radius: var(--border-radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    color: white;
+    flex-shrink: 0;
+    animation: checkmarkAppear 0.3s ease-out;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    wizard-progress {
+        padding: var(--spacing-lg) var(--spacing-md);
+    }
+
+    .wizard-progress-title {
+        font-size: var(--font-size-2xl);
+    }
+
+    .wizard-progress-subtitle {
+        font-size: var(--font-size-base);
+    }
+
+    .wizard-progress-cards {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-sm);
+    }
+
+    .wizard-progress-step-card {
+        padding: var(--spacing-md);
+        min-height: 70px;
+    }
+
+    .wizard-progress-step-number {
+        width: 32px;
+        height: 32px;
+        font-size: var(--font-size-base);
+    }
+
+    .wizard-progress-step-name {
+        font-size: var(--font-size-sm);
+    }
+
+    .wizard-progress-step-description {
+        font-size: var(--font-size-xs);
+    }
+
+    .wizard-progress-info {
+        flex-direction: column;
+        gap: var(--spacing-xs);
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    wizard-progress {
+        padding: var(--spacing-md) var(--spacing-sm);
+    }
+
+    .wizard-progress-title {
+        font-size: var(--font-size-xl);
+    }
+
+    .wizard-progress-step-card {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--spacing-sm);
+        min-height: 90px;
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+
+    .wizard-progress-step-content {
+        order: 2;
+    }
+
+    .wizard-progress-step-check {
+        order: 3;
+        align-self: center;
+    }
+
+    .wizard-progress-step-number {
+        order: 1;
+    }
+}
+
+/* Animation Keyframes */
+@keyframes checkmarkAppear {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Focus and Accessibility */
+.wizard-progress-step-card--clickable:focus {
+    outline: 2px solid white;
+    outline-offset: 2px;
+}
+
+.wizard-progress-step-card--clickable:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .wizard-progress-step-card {
+        border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .wizard-progress-step-card--current {
+        border-color: white;
+    }
+
+    .wizard-progress-step-card--completed {
+        border-color: var(--success-color);
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .wizard-progress-fill,
+    .wizard-progress-step-card,
+    .wizard-progress-step-number,
+    .wizard-progress-step-check {
+        transition: none;
+        animation: none;
+    }
+
+    .wizard-progress-fill::after {
+        animation: none;
+    }
+
+    .wizard-progress-step-card--clickable:hover {
+        transform: none;
+    }
+
+    .wizard-progress-step-card--current {
+        transform: none;
+    }
+
+    .wizard-progress-step-card--current .wizard-progress-step-number {
+        transform: none;
+    }
+}
+
+/* Print styles */
+@media print {
+    wizard-progress {
+        background: white !important;
+        color: black !important;
+        padding: var(--spacing-lg);
+    }
+
+    .wizard-progress-title,
+    .wizard-progress-subtitle,
+    .wizard-progress-step-name,
+    .wizard-progress-step-description,
+    .wizard-progress-step-text,
+    .wizard-progress-completion-text {
+        color: black !important;
+    }
+
+    .wizard-progress-step-card {
+        background: var(--gray-50) !important;
+        border: 1px solid var(--gray-300) !important;
+        page-break-inside: avoid;
+    }
+
+    .wizard-progress-step-number {
+        background: var(--gray-300) !important;
+        color: black !important;
+    }
+
+    .wizard-progress-step-card--completed .wizard-progress-step-number {
+        background: var(--success-color) !important;
+        color: white !important;
+    }
+
+    .wizard-progress-step-card--current {
+        background: var(--gray-100) !important;
+        border-color: var(--primary-color) !important;
+    }
+}

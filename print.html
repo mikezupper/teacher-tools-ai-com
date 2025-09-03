@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Printable Story Worksheet</title>
+    <link rel="stylesheet" href="/src/styles/main.css"/>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=%VITE_GOOGLE_TAG_ID%"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', '%VITE_GOOGLE_TAG_ID%');
+    </script>
+    <style>
+        /* Print-specific styles for enhanced layout */
+        .container {
+            max-width: 100%;
+            margin: 0;
+            padding: 20px;
+            font-family: 'Times New Roman', serif;
+            line-height: 1.6;
+        }
+
+        .storyApp__printTitle {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 24pt;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .storyApp__printSection {
+            margin-bottom: 30px;
+            page-break-inside: avoid;
+        }
+
+        .storyApp__printSection h2 {
+            font-size: 18pt;
+            margin-bottom: 15px;
+            color: #333;
+            border-bottom: 2px solid #333;
+            padding-bottom: 5px;
+        }
+
+        /* Two-column layout for story and image */
+        .storyApp__printTwoColumn {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .storyApp__printImageContainer {
+            flex: 0 0 300px;
+            text-align: center;
+        }
+
+        .storyApp__printImage {
+            max-width: 100%;
+            height: auto;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .storyApp__printStoryContent {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .storyApp__printStory {
+            font-size: 14pt;
+            line-height: 1.8;
+            color: #333;
+        }
+
+        .storyApp__printStory p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        /* Question formatting */
+        .question-item {
+            margin-bottom: 25px;
+            page-break-inside: avoid;
+        }
+
+        .question-header {
+            font-weight: bold;
+            font-size: 14pt;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .question-type {
+            font-style: italic;
+            color: #666;
+            font-size: 12pt;
+            margin-left: 8px;
+        }
+
+        /* Multiple choice options */
+        .question-options {
+            margin: 10px 0 15px 20px;
+        }
+
+        .question-option {
+            margin-bottom: 8px;
+            font-size: 13pt;
+        }
+
+        .option-letter {
+            font-weight: bold;
+            margin-right: 8px;
+            color: #333;
+        }
+
+        /* Answer lines for open-ended questions */
+        .answer-lines {
+            margin: 15px 0 10px 20px;
+        }
+
+        .answer-line {
+            border-bottom: 1px solid #333;
+            height: 25px;
+            margin-bottom: 8px;
+            width: 100%;
+        }
+
+        /* Prompts formatting */
+        .prompt-item {
+            margin-bottom: 20px;
+            font-size: 13pt;
+            page-break-inside: avoid;
+        }
+
+        .prompt-item strong {
+            color: #333;
+            margin-right: 8px;
+        }
+
+        /* Print media query */
+        @media print {
+            .container {
+                padding: 15px;
+            }
+
+            .storyApp__printTitle {
+                font-size: 20pt;
+                margin-bottom: 25px;
+            }
+
+            .storyApp__printSection h2 {
+                font-size: 16pt;
+            }
+
+            .storyApp__printStory {
+                font-size: 12pt;
+            }
+
+            .question-header {
+                font-size: 12pt;
+            }
+
+            .answer-line {
+                height: 20px;
+            }
+        }
+
+        /* Hide image container when no image */
+        .storyApp__printImageContainer.hidden {
+            display: none;
+        }
+
+        .storyApp__printTwoColumn.no-image {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 class="storyApp__printTitle"></h1>
+
+    <section class="storyApp__printSection">
+        <h2>Thinking Prompts</h2>
+        <div class="storyApp__printPrompts"></div>
+    </section>
+
+    <section class="storyApp__printSection">
+        <h2>Story</h2>
+        <div class="storyApp__printTwoColumn">
+            <div class="storyApp__printImageContainer">
+                <img class="storyApp__printImage" alt="Story image" style="display: none;">
+            </div>
+            <div class="storyApp__printStoryContent">
+                <div class="storyApp__printStory"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="storyApp__printSection">
+        <h2>Comprehension Questions</h2>
+        <div class="storyApp__printQuestions"></div>
+    </section>
+</div>
+
+<script type="module">
+    import {getFullStory$} from '/src/db/StoryAppDB.js';
+    import {extractStoryContent} from "./src/api/util.js";
+
+    // Parse storyId from URL parameters
+    const params = new URLSearchParams(window.location.search);
+    const storyIdParam = params.get('storyId');
+    const storyId = storyIdParam ? parseInt(storyIdParam, 10) : null;
+
+    // DOM elements
+    const titleEl = document.querySelector('.storyApp__printTitle');
+    const storyEl = document.querySelector('.storyApp__printStory');
+    const imageEl = document.querySelector('.storyApp__printImage');
+    const imageContainer = document.querySelector('.storyApp__printImageContainer');
+    const twoColumnContainer = document.querySelector('.storyApp__printTwoColumn');
+    const promptsEl = document.querySelector('.storyApp__printPrompts');
+    const questionsEl = document.querySelector('.storyApp__printQuestions');
+
+    function createAnswerLines() {
+        return `
+            <div class="answer-lines">
+                <div class="answer-line"></div>
+                <div class="answer-line"></div>
+                <div class="answer-line"></div>
+                <div class="answer-line"></div>
+            </div>
+        `;
+    }
+
+    function formatQuestion(question, index) {
+        const questionText = question.questionText || question.text || question;
+        const questionType = question.type || 'Open-ended';
+
+        let optionsHtml = '';
+        let answerLinesHtml = '';
+
+        if (questionType === 'Multiple Choice' && question.options && question.options.length > 0) {
+            optionsHtml = `
+                <div class="question-options">
+                    ${question.options.map((option, optIndex) =>
+                `<div class="question-option">
+                            <span class="option-letter">${String.fromCharCode(65 + optIndex)}.</span>
+                            ${option}
+                        </div>`
+            ).join('')}
+                </div>
+            `;
+        } else if (questionType === 'True/False') {
+            optionsHtml = `
+                <div class="question-options">
+                    <div class="question-option">
+                        <span class="option-letter">A.</span>
+                        True
+                    </div>
+                    <div class="question-option">
+                        <span class="option-letter">B.</span>
+                        False
+                    </div>
+                </div>
+            `;
+        } else if (questionType === 'Open-ended' || questionType === 'Custom' || !questionType) {
+            // Add 4 lines for open-ended questions
+            answerLinesHtml = createAnswerLines();
+        }
+
+        return `
+            <div class="question-item">
+                <div class="question-header">
+                    ${index + 1}. ${questionText}
+                    <span class="question-type">(${questionType})</span>
+                </div>
+                ${optionsHtml}
+                ${answerLinesHtml}
+            </div>
+        `;
+    }
+
+    (async () => {
+        if (!storyId) {
+            console.error('No storyId provided in URL');
+            titleEl.textContent = 'Error: No story selected';
+            return;
+        }
+
+        // Load the specific story from the DB
+        const storySub = getFullStory$(storyId)
+            .subscribe({
+                next: async story => {
+                    if (!story) {
+                        console.error(`Story with id ${storyId} not found`);
+                        titleEl.textContent = 'Error: Story not found';
+                        return;
+                    }
+
+                    if(story.imageBlob){
+                        story.imageUrl = URL.createObjectURL(story.imageBlob);
+                    }
+
+                    console.log('Loaded story:', story);
+
+                    // Populate DOM elements
+                    titleEl.textContent = story.title || 'Untitled Story';
+
+                    // Extract and display story content
+                    const storyText = extractStoryContent(story);
+                    const formattedStory = storyText.split('\n\n').map(paragraph =>
+                        `<p>${paragraph.trim()}</p>`
+                    ).join('');
+
+                    storyEl.innerHTML = formattedStory || '<p>No story content available.</p>';
+
+                    // Handle image and layout
+                    if (story.imageUrl) {
+                        imageEl.src = story.imageUrl;
+                        imageEl.style.display = 'block';
+                        imageContainer.classList.remove('hidden');
+                        twoColumnContainer.classList.remove('no-image');
+                    } else {
+                        imageEl.style.display = 'none';
+                        imageContainer.classList.add('hidden');
+                        twoColumnContainer.classList.add('no-image');
+                    }
+
+                    // Handle prompts
+                    if (story.prompts && story.prompts.length > 0) {
+                        const promptsList = story.prompts.map((prompt, index) =>
+                            `<div class="prompt-item">
+                                <strong>${index + 1}.</strong> ${prompt.promptText || prompt}
+                            </div>`
+                        ).join('');
+                        promptsEl.innerHTML = promptsList;
+                    } else {
+                        promptsEl.innerHTML = '<p>No thinking prompts available.</p>';
+                    }
+
+                    // Handle questions with enhanced formatting
+                    if (story.questions && story.questions.length > 0) {
+                        const questionsList = story.questions.map((question, index) =>
+                            formatQuestion(question, index)
+                        ).join('');
+                        questionsEl.innerHTML = questionsList;
+                    } else {
+                        questionsEl.innerHTML = '<p>No comprehension questions available.</p>';
+                    }
+
+                    // Auto-print after content loads
+                    setTimeout(() => {
+                        window.print();
+                    }, 1000);
+                },
+                error: err => {
+                    console.error('Error loading story:', err);
+                    titleEl.textContent = 'Error loading story';
+                }
+            });
+    })();
+</script>
+</body>
+</html>

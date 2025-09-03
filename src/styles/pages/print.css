@@ -1,0 +1,83 @@
+/* Print page CSS additions - Add to existing print styles */
+
+/* Structured story content for print */
+.storyApp__printStory .structured-story-content {
+    line-height: 1.6;
+    font-size: 14pt;
+    color: #333;
+}
+
+.storyApp__printStory .paragraph-print {
+    margin-bottom: 12pt;
+    text-indent: 0;
+}
+
+.storyApp__printStory .paragraph-print:first-child {
+    margin-top: 0;
+}
+
+.storyApp__printStory .paragraph-print:last-child {
+    margin-bottom: 0;
+}
+
+/* Hide phonics indicators in print */
+.storyApp__printStory .phonics-indicator,
+.storyApp__printStory .phonics-highlight {
+    display: none;
+}
+
+/* Ensure clean paragraph breaks in print */
+.storyApp__printStory p {
+    margin-bottom: 12pt;
+    text-indent: 0;
+    orphans: 2;
+    widows: 2;
+}
+
+.storyApp__printStory p:last-child {
+    margin-bottom: 0;
+}
+
+/* Print-specific item styling */
+.prompt-item,
+.question-item {
+    margin-bottom: 8pt;
+    padding: 4pt 0;
+    page-break-inside: avoid;
+}
+
+.prompt-item strong,
+.question-item strong {
+    font-weight: bold;
+    color: #333;
+}
+
+.question-type {
+    font-style: italic;
+    color: #666;
+    font-size: 10pt;
+    margin-left: 4pt;
+}
+
+/* Ensure proper spacing for print items */
+.prompt-item:last-child,
+.question-item:last-child {
+    margin-bottom: 0;
+}
+
+/* Print media query adjustments */
+@media print {
+    .structured-story-content {
+        font-size: 12pt !important;
+        line-height: 1.5 !important;
+    }
+
+    .paragraph-print {
+        margin-bottom: 10pt !important;
+    }
+
+    .prompt-item,
+    .question-item {
+        margin-bottom: 6pt !important;
+    }
+}

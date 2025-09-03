@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Teacher Tools.com - Building Tools for Teachers</title>
+    <meta name="description"
+          content="Revolutionary AI-powered platform for teachers to create personalized educational stories with custom illustrations, comprehension questions, and thinking prompts. Transform how you engage students with tailored reading materials.">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/src/styles/pages/landing.css">
+    <!-- SEO and social meta -->
+    <meta property="og:title" content="AI Teacher Tools: Story Generation - Create Custom Educational Stories">
+    <meta property="og:description"
+          content="Revolutionary platform for teachers to create personalized educational stories with custom illustrations, comprehension questions, and thinking prompts.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://teachertools-ai.com">
+    <meta property="og:image" content="https://teachertools-ai.com/images/og-image.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="AI Teacher Tools: Story Generation - Create Custom Educational Stories">
+    <meta name="twitter:description"
+          content="Revolutionary platform for teachers to create personalized educational stories with custom illustrations, comprehension questions, and thinking prompts.">
+    <meta name="twitter:image" content="https://teachertools-ai.com/images/twitter-image.jpg">
+    <meta name="theme-color" content="#007bff">
+
+    <!-- Structured data for educational tool -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "AI Teacher Tools: Story Generation Tool",
+            "description": "An educational story creation platform for teachers",
+            "applicationCategory": "EducationalApplication",
+            "operatingSystem": "Web Browser",
+            "url": "https://teachertools-ai.com",
+            "creator": {
+                "@type": "Organization",
+                "name": "AI Teacher Tools"
+            },
+            "audience": {
+                "@type": "EducationalAudience",
+                "educationalRole": "teacher"
+            },
+            "educationalUse": "curriculum",
+            "teaches": "reading comprehension",
+            "interactivityType": "active",
+            "learningResourceType": "narrative text",
+            "accessibilityFeature": [
+                "alternativeText",
+                "readingOrder",
+                "structuralNavigation"
+            ]
+        }
+    </script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=%VITE_GOOGLE_TAG_ID%"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', '%VITE_GOOGLE_TAG_ID%');
+    </script>
+</head>
+<body>
+<header-component></header-component>
+<main id="main-content">
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="badge-icon">✨</span>
+                    <span class="badge-text">AI-Powered Story Creation</span>
+                </div>
+                <h1 class="hero-title">
+                    Create <span class="highlight-text">Custom Educational Stories</span>
+                    That Captivate Your Students
+                </h1>
+                <p class="hero-description">
+                    Transform reading instruction with personalized stories tailored to your students' grade level,
+                    reading skills, and interests. Complete with AI-generated illustrations, comprehension questions,
+                    and thinking prompts.
+                </p>
+                <div class="hero-cta">
+                    <a href="/dashboard.html" class="button-primary large">
+                        <span class="button-icon">🚀</span>
+                        Start Creating Stories
+                    </a>
+                    <a href="#demo" class="button-outline large">
+                        <span class="button-icon">▶️</span>
+                        Watch Demo
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">10,000+</div>
+                        <div class="stat-label">Stories Created</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">5,000+</div>
+                        <div class="stat-label">Teachers</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">98%</div>
+                        <div class="stat-label">Satisfaction</div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-image-container">
+                    <img src="./src/images/teacher.png"
+                         alt="Teacher using the story creation tool with students gathered around"
+                         class="hero-image" loading="eager">
+                    <div class="floating-elements">
+                        <div class="floating-card story-card">
+                            <div class="card-icon">📖</div>
+                            <div class="card-text">AI Story Generation</div>
+                        </div>
+                        <div class="floating-card image-card">
+                            <div class="card-icon">🎨</div>
+                            <div class="card-text">Custom Illustrations</div>
+                        </div>
+                        <div class="floating-card question-card">
+                            <div class="card-icon">❓</div>
+                            <div class="card-text">Smart Questions</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features-section">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">Everything You Need to Create Engaging Stories</h2>
+                <p class="section-description">
+                    Our comprehensive platform provides all the tools teachers need to create, customize,
+                    and share educational stories that inspire learning.
+                </p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <img src="./src/images/lightbulb-smart.png" alt="AI brain illustration" loading="lazy">
+                    </div>
+                    <h3 class="feature-title">AI Story Generation</h3>
+                    <p class="feature-description">
+                        Create unique stories tailored to specific grade levels, reading skills, and topics
+                        using advanced AI that understands educational requirements.
+                    </p>
+                    <ul class="feature-benefits">
+                        <li>Grade-appropriate vocabulary</li>
+                        <li>Skill-focused content</li>
+                        <li>Custom topics and themes</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <img src="https://picsum.photos/80/80?random=art" alt="Colorful illustration tools"
+                             loading="lazy">
+                    </div>
+                    <h3 class="feature-title">Custom Illustrations</h3>
+                    <p class="feature-description">
+                        Bring stories to life with AI-generated illustrations that match your narrative
+                        and help students visualize key scenes and characters.
+                    </p>
+                    <ul class="feature-benefits">
+                        <li>Scene-specific artwork</li>
+                        <li>Character visualizations</li>
+                        <li>Educational imagery</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <img src="https://picsum.photos/80/80?random=questions" alt="Question mark and lightbulb"
+                             loading="lazy">
+                    </div>
+                    <h3 class="feature-title">Comprehension Questions</h3>
+                    <p class="feature-description">
+                        Automatically generate thoughtful questions that test understanding,
+                        encourage critical thinking, and align with reading comprehension standards.
+                    </p>
+                    <ul class="feature-benefits">
+                        <li>Multiple difficulty levels</li>
+                        <li>Various question types</li>
+                        <li>Standards-aligned</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <img src="https://picsum.photos/80/80?random=thinking" alt="Thought bubble with gears"
+                             loading="lazy">
+                    </div>
+                    <h3 class="feature-title">Thinking Prompts</h3>
+                    <p class="feature-description">
+                        Engage students with pre-reading reflection questions that help them connect
+                        personally with stories and develop deeper thinking skills.
+                    </p>
+                    <ul class="feature-benefits">
+                        <li>Personal connection</li>
+                        <li>Critical thinking</li>
+                        <li>Metacognitive skills</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <img src="https://picsum.photos/80/80?random=customize" alt="Settings and customization tools"
+                             loading="lazy">
+                    </div>
+                    <h3 class="feature-title">Full Customization</h3>
+                    <p class="feature-description">
+                        Tailor every aspect of your story - from sentence types and genres to length
+                        and complexity - to perfectly match your teaching objectives.
+                    </p>
+                    <ul class="feature-benefits">
+                        <li>Flexible story length</li>
+                        <li>Multiple genres</li>
+                        <li>Sentence variety</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <img src="https://picsum.photos/80/80?random=export" alt="Download and sharing icons"
+                             loading="lazy">
+                    </div>
+                    <h3 class="feature-title">Easy Preview and Printing</h3>
+                    <p class="feature-description">
+                        Preview your completed stories as beautiful, print-ready documents.
+                    </p>
+                    <ul class="feature-benefits">
+                        <li>Print-ready design</li>
+                        <li>Mobile-friendly</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="how-it-works-section">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">Create Amazing Stories in 6 Simple Steps</h2>
+                <p class="section-description">
+                    Our intuitive wizard guides you through the entire process, from initial concept to final preview or
+                    print.
+                </p>
+            </div>
+            <div class="steps-container">
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3 class="step-title">Story Details</h3>
+                        <p class="step-description">
+                            Choose your topic, grade level, reading skill focus, story length, and genre.
+                            Our form makes it easy to specify exactly what you need.
+                        </p>
+                        <div class="step-image">
+                            <img src="https://picsum.photos/300/200?random=form"
+                                 alt="Story creation form interface" loading="lazy">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3 class="step-title">AI Story Generation</h3>
+                        <p class="step-description">
+                            Watch as our AI creates a unique, engaging story based on your specifications.
+                            Review and refine until it's perfect for your students.
+                        </p>
+                        <div class="step-image">
+                            <img src="https://picsum.photos/300/200?random=story"
+                                 alt="Generated story preview" loading="lazy">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3 class="step-title">Add Illustrations</h3>
+                        <p class="step-description">
+                            Enhance your story with custom AI-generated illustrations that bring scenes
+                            to life and support visual learners.
+                        </p>
+                        <div class="step-image">
+                            <img src="https://picsum.photos/300/200?random=illustrations"
+                                 alt="Story with beautiful illustrations" loading="lazy">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3 class="step-title">Generate Questions</h3>
+                        <p class="step-description">
+                            Add comprehension questions that test understanding and encourage critical thinking.
+                            Choose from multiple difficulty levels and question types.
+                        </p>
+                        <div class="step-image">
+                            <img src="https://picsum.photos/300/200?random=quiz"
+                                 alt="Comprehension questions interface" loading="lazy">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h3 class="step-title">Thinking Prompts</h3>
+                        <p class="step-description">
+                            Include reflection questions that help students connect personally with the story
+                            and develop deeper analytical skills.
+                        </p>
+                        <div class="step-image">
+                            <img src="https://picsum.photos/300/200?random=reflection"
+                                 alt="Thinking prompts and reflection questions" loading="lazy">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-number">6</div>
+                    <div class="step-content">
+                        <h3 class="step-title">Preview and Print</h3>
+                        <p class="step-description">
+                            Preview your complete story as a beautiful document ready for printing.
+                        </p>
+                        <div class="step-image">
+                            <img src="https://picsum.photos/300/200?random=document"
+                                 alt="Final exported story document" loading="lazy">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section id="benefits" class="benefits-section">
+        <div class="section-container">
+            <div class="benefits-layout">
+                <div class="benefits-content">
+                    <h2 class="section-title">Transform Your Teaching with Custom Stories</h2>
+                    <div class="benefits-list">
+                        <div class="benefit-item">
+                            <div class="benefit-icon">⚡</div>
+                            <div class="benefit-content">
+                                <h3 class="benefit-title">Save Hours of Prep Time</h3>
+                                <p class="benefit-description">
+                                    Create complete stories with illustrations and questions in minutes,
+                                    not hours. Spend more time teaching, less time searching for materials.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="benefit-item">
+                            <div class="benefit-icon">🎯</div>
+                            <div class="benefit-content">
+                                <h3 class="benefit-title">Perfect Alignment</h3>
+                                <p class="benefit-description">
+                                    Every story is precisely aligned to your students' reading level and
+                                    curriculum objectives, ensuring maximum educational impact.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="benefit-item">
+                            <div class="benefit-icon">🌟</div>
+                            <div class="benefit-content">
+                                <h3 class="benefit-title">Boost Engagement</h3>
+                                <p class="benefit-description">
+                                    Students love stories created just for them. Watch comprehension
+                                    and enthusiasm soar with personalized content.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="benefit-item">
+                            <div class="benefit-icon">📈</div>
+                            <div class="benefit-content">
+                                <h3 class="benefit-title">Measurable Results</h3>
+                                <p class="benefit-description">
+                                    Built-in comprehension questions and thinking prompts help you
+                                    assess learning and guide instruction effectively.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="benefits-visual">
+                    <div class="benefits-image-stack">
+                        <img src="https://picsum.photos/400/300?random=classroom"
+                             alt="Engaged students reading custom stories"
+                             class="benefits-image primary" loading="lazy">
+                        <img src="https://picsum.photos/300/200?random=happy-teacher"
+                             alt="Happy teacher with tablet showing story tool"
+                             class="benefits-image secondary" loading="lazy">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section id="demo" class="demo-section">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">See It In Action</h2>
+                <p class="section-description">
+                    Watch how easy it is to create a complete, engaging story with just a few clicks.
+                </p>
+            </div>
+            <div class="demo-container">
+                <div class="demo-video">
+                    <div class="video-placeholder">
+                        <img src="https://picsum.photos/800/450?random=demo"
+                             alt="Demo video showing story creation process" loading="lazy">
+                        <button class="play-button" aria-label="Play demo video">
+                            <span class="play-icon">▶️</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="demo-features">
+                    <h3>What You'll See:</h3>
+                    <ul class="demo-checklist">
+                        <li>✅ Quick story setup and customization</li>
+                        <li>✅ AI generating engaging content</li>
+                        <li>✅ Beautiful illustrations being created</li>
+                        <li>✅ Smart questions and prompts</li>
+                        <li>✅ Preview & Print</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">Loved by Teachers Everywhere</h2>
+                <p class="section-description">
+                    Join thousands of educators who are transforming their reading instruction.
+                </p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p class="testimonial-text">
+                            "This tool has revolutionized my reading lessons. My students are more
+                            engaged than ever, and I can create perfect stories for any skill level
+                            in minutes!"
+                        </p>
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="https://picsum.photos/60/60?random=teacher1"
+                             alt="Sarah Johnson profile" class="author-avatar" loading="lazy">
+                        <div class="author-info">
+                            <div class="author-name">Sarah Johnson</div>
+                            <div class="author-role">3rd Grade Teacher, Lincoln Elementary</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p class="testimonial-text">
+                            "The AI-generated illustrations are incredible! My visual learners finally
+                            have stories that speak to them. Comprehension scores have improved dramatically."
+                        </p>
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="https://picsum.photos/60/60?random=teacher2"
+                             alt="Mike Rodriguez profile" class="author-avatar" loading="lazy">
+                        <div class="author-info">
+                            <div class="author-name">Mike Rodriguez</div>
+                            <div class="author-role">Reading Specialist, Oakwood School</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p class="testimonial-text">
+                            "I love how I can customize everything - topics my students care about,
+                            exactly the right reading level, and questions that really make them think."
+                        </p>
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="https://picsum.photos/60/60?random=teacher3"
+                             alt="Emily Chen profile" class="author-avatar" loading="lazy">
+                        <div class="author-info">
+                            <div class="author-name">Emily Chen</div>
+                            <div class="author-role">2nd Grade Teacher, Riverside Primary</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="section-container">
+            <div class="cta-content">
+                <h2 class="cta-title">Ready to Transform Your Reading Instruction?</h2>
+                <p class="cta-description">
+                    Join thousands of teachers creating engaging, personalized stories that inspire learning.
+                    Start for free today!
+                </p>
+                <div class="cta-buttons">
+                    <a href="/dashboard.html" class="button-primary extra-large">
+                        <span class="button-icon">🚀</span>
+                        Start Creating Stories Now
+                    </a>
+                    <div class="cta-note">Free forever • No credit card required • Create unlimited stories</div>
+                </div>
+            </div>
+            <div class="cta-visual">
+                <img src="https://picsum.photos/500/400?random=success"
+                     alt="Teachers and students celebrating with custom stories"
+                     class="cta-image" loading="lazy">
+            </div>
+        </div>
+    </section>
+</main>
+<footer-component></footer-component>
+
+<script type="module">
+
+    import '/src/components/header-component.js';
+    import '/src/components/footer-component.js';
+
+    addEventListener("DOMContentLoaded", (event) => {
+        const toggleBtn = document.querySelector('.mobile-menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        toggleBtn?.addEventListener('click', () => {
+            navLinks?.classList.toggle('active');
+        });
+    });
+</script>
+</body>
+</html>

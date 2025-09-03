@@ -1,0 +1,8 @@
+node_modules/
+.env
+*.log
+dist/
+.idea/
+/dev-dist/registerSW.js
+/dev-dist/sw.js
+/dev-dist/workbox-54d0af47.js

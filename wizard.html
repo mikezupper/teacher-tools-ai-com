@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Story Wizard App</title>
+    <link rel="stylesheet" href="/src/styles/main.css"/>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=%VITE_GOOGLE_TAG_ID%"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', '%VITE_GOOGLE_TAG_ID%');
+    </script>
+</head>
+<body>
+<div class="container">
+    <header-component></header-component>
+
+    <div class="wizard-wrapper">
+        <story-generation-wizard story-id="123" current-step="0">
+            <toast-component slot="toast"></toast-component>
+            <wizard-progress slot="progress"></wizard-progress>
+
+            <step1-topic slot="step" data-step="0"></step1-topic>
+            <step2-image slot="step" data-step="1"></step2-image>
+            <step3-questions slot="step" data-step="2"></step3-questions>
+            <step4-prompts slot="step" data-step="3"></step4-prompts>
+            <step5-complete slot="step" data-step="4"></step5-complete>
+
+            <wizard-navigation slot="navigation"></wizard-navigation>
+        </story-generation-wizard>
+    </div>
+
+    <footer-component></footer-component>
+</div>
+
+<script type="module">
+    // main.js - For wizard page
+    import '/src/utils/abortable.js';
+    import '/src/components/header-component.js';
+    import '/src/components/footer-component.js';
+    import '/src/components/story-generation-wizard.js';
+    import '/src/components/wizard-progress.js';
+    import '/src/components/wizard-navigation.js';
+    import '/src/components/step1-topic.js';
+    import '/src/components/step2-image.js';
+    import '/src/components/step3-questions.js';
+    import '/src/components/step4-prompts.js';
+    import '/src/components/step5-complete.js';
+    import '/src/components/toast-component.js';
+</script>
+</body>
+</html>

@@ -1,0 +1,396 @@
+/* ==========================================================================
+   WIZARD NAVIGATION COMPONENT - Step indicator and navigation controls
+   ========================================================================== */
+
+/* Root Navigation Container */
+wizard-navigation {
+    display: block;
+    background: var(--background-secondary);
+    border-top: 1px solid var(--gray-200);
+    flex-shrink: 0; /* Prevent navigation from shrinking */
+    width: 100%;
+    min-height: 60px; /* Ensure consistent minimum height */
+}
+
+.wizard-navigation-root {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-lg) var(--spacing-xl);
+    max-width: 1000px;
+    margin: 0 auto;
+    position: relative;
+    min-height: 60px; /* Match parent min-height */
+    box-sizing: border-box;
+    width: 100%;
+}
+
+/* Step Indicator */
+.wizard-navigation-step-indicator {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--gray-600);
+    background: var(--background-primary);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-full);
+    border: 2px solid var(--gray-200);
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-normal);
+    user-select: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+    min-width: 120px; /* Ensure consistent width */
+    text-align: center;
+}
+
+/* Enhanced Step Indicator with Animation */
+.wizard-navigation-step-indicator.updating {
+    transform: scale(1.05);
+    border-color: var(--primary-color);
+    background: rgba(102, 126, 234, 0.05);
+    color: var(--primary-color);
+}
+
+/* Progress Dots Alternative (when enabled) */
+.wizard-navigation-progress-dots {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md) 0;
+}
+
+.wizard-navigation-progress-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: var(--border-radius-full);
+    background: var(--gray-300);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    position: relative;
+    border: 2px solid transparent;
+    flex-shrink: 0;
+}
+
+.wizard-navigation-progress-dot:hover {
+    background: var(--gray-400);
+    transform: scale(1.1);
+}
+
+.wizard-navigation-progress-dot.active {
+    background: var(--primary-color);
+    transform: scale(1.3);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    border-color: white;
+}
+
+.wizard-navigation-progress-dot.completed {
+    background: var(--success-color);
+    position: relative;
+}
+
+.wizard-navigation-progress-dot.completed::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 8px;
+    color: white;
+    font-weight: var(--font-weight-bold);
+}
+
+/* Navigation Buttons (if present) */
+.wizard-navigation-buttons {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    position: absolute;
+    right: var(--spacing-xl);
+}
+
+.wizard-navigation-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid var(--gray-300);
+    border-radius: var(--border-radius);
+    background: var(--background-primary);
+    color: var(--gray-700);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    text-decoration: none;
+    user-select: none;
+    white-space: nowrap;
+    min-height: 36px; /* Consistent button height */
+    box-sizing: border-box;
+}
+
+.wizard-navigation-btn:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    background: rgba(102, 126, 234, 0.05);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow);
+}
+
+.wizard-navigation-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.wizard-navigation-btn.primary {
+    background: var(--primary-gradient);
+    color: white;
+    border-color: transparent;
+    box-shadow: var(--shadow-primary);
+}
+
+.wizard-navigation-btn.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-primary-lg);
+    background: var(--primary-gradient);
+    color: white;
+}
+
+/* Back/Previous Button */
+.wizard-navigation-btn-back {
+    background: var(--gray-500);
+    color: white;
+    border-color: var(--gray-500);
+}
+
+.wizard-navigation-btn-back:hover {
+    background: var(--gray-600);
+    border-color: var(--gray-600);
+    color: white;
+}
+
+/* Step Summary (optional) */
+.wizard-navigation-step-summary {
+    position: absolute;
+    left: var(--spacing-xl);
+    font-size: var(--font-size-xs);
+    color: var(--gray-500);
+    font-weight: var(--font-weight-medium);
+    white-space: nowrap;
+}
+
+/* Keyboard Navigation Hints */
+.wizard-navigation-keyboard-hints {
+    position: absolute;
+    bottom: -24px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: var(--font-size-xs);
+    color: var(--gray-400);
+    text-align: center;
+    white-space: nowrap;
+}
+
+.wizard-navigation-keyboard-hints kbd {
+    background: var(--gray-100);
+    border: 1px solid var(--gray-300);
+    border-radius: var(--border-radius-sm);
+    padding: 2px 4px;
+    font-family: var(--font-family-mono);
+    font-size: 10px;
+    margin: 0 2px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    wizard-navigation {
+        min-height: 70px; /* Slightly taller on mobile for better touch targets */
+    }
+
+    .wizard-navigation-root {
+        padding: var(--spacing-md) var(--spacing-lg);
+        flex-direction: column;
+        gap: var(--spacing-md);
+        min-height: 70px;
+        justify-content: center;
+    }
+
+    .wizard-navigation-buttons {
+        position: static;
+        order: 2;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .wizard-navigation-step-summary {
+        position: static;
+        order: 1;
+        text-align: center;
+    }
+
+    .wizard-navigation-step-indicator {
+        order: 0;
+        min-width: 140px; /* Slightly wider on mobile */
+    }
+
+    .wizard-navigation-btn {
+        flex: 1;
+        justify-content: center;
+        min-width: 100px;
+        min-height: 44px; /* Better touch target on mobile */
+    }
+
+    .wizard-navigation-keyboard-hints {
+        display: none;
+    }
+
+    .wizard-navigation-progress-dots {
+        gap: var(--spacing-sm);
+    }
+
+    .wizard-navigation-progress-dot {
+        width: 10px;
+        height: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    wizard-navigation {
+        min-height: 80px; /* Even taller on very small screens */
+    }
+
+    .wizard-navigation-root {
+        padding: var(--spacing-sm) var(--spacing-md);
+        min-height: 80px;
+    }
+
+    .wizard-navigation-buttons {
+        flex-direction: column;
+        width: 100%;
+        gap: var(--spacing-sm);
+    }
+
+    .wizard-navigation-btn {
+        width: 100%;
+        min-height: 44px;
+    }
+
+    .wizard-navigation-step-indicator {
+        font-size: var(--font-size-xs);
+        padding: var(--spacing-xs) var(--spacing-sm);
+        min-width: 120px;
+    }
+
+    .wizard-navigation-step-summary {
+        font-size: 10px;
+    }
+
+    .wizard-navigation-progress-dots {
+        gap: var(--spacing-xs);
+    }
+
+    .wizard-navigation-progress-dot {
+        width: 8px;
+        height: 8px;
+    }
+}
+
+/* Focus and Accessibility */
+.wizard-navigation-progress-dot:focus,
+.wizard-navigation-btn:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+.wizard-navigation-progress-dot:focus-visible,
+.wizard-navigation-btn:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .wizard-navigation-step-indicator {
+        border-color: var(--gray-400);
+    }
+
+    .wizard-navigation-progress-dot {
+        border: 2px solid var(--gray-400);
+    }
+
+    .wizard-navigation-progress-dot.active {
+        border-color: var(--primary-color);
+    }
+
+    .wizard-navigation-btn {
+        border-color: var(--gray-500);
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .wizard-navigation-step-indicator,
+    .wizard-navigation-progress-dot,
+    .wizard-navigation-btn {
+        transition: none;
+    }
+
+    .wizard-navigation-step-indicator.updating {
+        transform: none;
+    }
+
+    .wizard-navigation-progress-dot:hover,
+    .wizard-navigation-progress-dot.active {
+        transform: none;
+    }
+
+    .wizard-navigation-btn:hover {
+        transform: none;
+    }
+}
+
+/* Animation for step changes */
+@keyframes stepChange {
+    0% {
+        opacity: 0.7;
+        transform: scale(0.95);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.wizard-navigation-step-indicator.step-changed {
+    animation: stepChange 0.4s ease-out;
+}
+
+/* Loading state */
+.wizard-navigation-root.loading {
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.wizard-navigation-root.loading .wizard-navigation-step-indicator::after {
+    content: '';
+    margin-left: var(--spacing-sm);
+    width: 12px;
+    height: 12px;
+    border: 2px solid var(--gray-300);
+    border-top: 2px solid var(--primary-color);
+    border-radius: var(--border-radius-full);
+    animation: spin 1s linear infinite;
+    display: inline-block;
+}
+
+/* Print styles */
+@media print {
+    wizard-navigation {
+        display: none;
+    }
+}

@@ -1,0 +1,584 @@
+/* components/step5-complete.css - Additional styles for structured story display */
+
+/* Structured Story Preview in Step 5 */
+.structured-story-preview {
+    background: var(--gray-50);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-lg);
+    margin: var(--spacing-md) 0;
+    border: 1px solid var(--gray-200);
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.paragraph-preview {
+    margin-bottom: var(--spacing-lg);
+    padding: var(--spacing-md);
+    background: white;
+    border-radius: var(--border-radius);
+    border-left: 3px solid var(--primary-color);
+    box-shadow: var(--shadow-sm);
+}
+
+.paragraph-preview:last-child {
+    margin-bottom: 0;
+}
+
+.paragraph-preview[data-paragraph]::before {
+    content: "¶" attr(data-paragraph);
+    display: inline-block;
+    background: var(--primary-color);
+    color: white;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    padding: 2px 6px;
+    border-radius: var(--border-radius-full);
+    margin-right: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+    vertical-align: middle;
+}
+
+.sentence-preview {
+    display: inline;
+    margin-right: var(--spacing-xs);
+    line-height: var(--line-height-relaxed);
+}
+
+.sentence-preview[data-sentence]:hover {
+    background-color: rgba(102, 126, 234, 0.1);
+    border-radius: var(--border-radius-sm);
+    padding: 1px 3px;
+    margin: -1px -3px;
+    cursor: default;
+}
+
+.phonics-indicator {
+    display: inline-flex;
+    align-items: center;
+    background: var(--success-color);
+    color: white;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    padding: 1px 4px;
+    border-radius: var(--border-radius-sm);
+    margin-left: var(--spacing-xs);
+    cursor: help;
+    vertical-align: middle;
+}
+
+.phonics-indicator:hover {
+    background: var(--success-color-dark);
+    transform: scale(1.05);
+}
+
+/* Story content preview styling */
+.step5-complete-story-content-preview {
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-lg);
+    margin: var(--spacing-md) 0;
+    max-height: 300px;
+    overflow-y: auto;
+    line-height: var(--line-height-relaxed);
+    font-size: var(--font-size-base);
+}
+
+/* Enhanced detail items */
+.step5-complete-detail-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    padding: var(--spacing-sm) 0;
+    border-bottom: 1px solid var(--gray-100);
+}
+
+.step5-complete-detail-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.step5-complete-detail-label {
+    font-weight: var(--font-weight-semibold);
+    color: var(--gray-600);
+    min-width: 100px;
+    flex-shrink: 0;
+    font-size: var(--font-size-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.step5-complete-detail-value {
+    color: var(--gray-800);
+    font-weight: var(--font-weight-medium);
+    flex-grow: 1;
+    word-wrap: break-word;
+}
+
+/* Content headers */
+.step5-complete-content-header {
+    font-weight: var(--font-weight-semibold);
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-md);
+    font-size: var(--font-size-lg);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 2px solid rgba(102, 126, 234, 0.2);
+}
+
+/* Image container */
+.step5-complete-image-container {
+    text-align: center;
+    margin: var(--spacing-md) 0;
+}
+
+.step5-complete-story-image {
+    max-width: 100%;
+    max-height: 300px;
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-md);
+    transition: transform var(--transition-normal);
+}
+
+.step5-complete-story-image:hover {
+    transform: scale(1.02);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Action buttons styling */
+.step5-complete-action-buttons {
+    display: flex;
+    gap: var(--spacing-lg);
+    justify-content: center;
+    margin-top: var(--spacing-2xl);
+    padding-top: var(--spacing-xl);
+    border-top: 2px solid var(--gray-200);
+}
+
+.step5-complete-btn-print,
+.step5-complete-btn-finish {
+    padding: var(--spacing-md) var(--spacing-xl);
+    border: none;
+    border-radius: var(--border-radius-md);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    text-decoration: none;
+}
+
+.step5-complete-btn-print {
+    background: var(--gray-100);
+    color: var(--gray-700);
+    border: 2px solid var(--gray-300);
+}
+
+.step5-complete-btn-print:hover {
+    background: var(--gray-200);
+    border-color: var(--gray-400);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.step5-complete-btn-finish {
+    background: var(--primary-gradient);
+    color: white;
+    box-shadow: var(--shadow-primary);
+}
+
+.step5-complete-btn-finish:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-primary-lg);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .step5-complete-action-buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .step5-complete-btn-print,
+    .step5-complete-btn-finish {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .step5-complete-detail-item {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+
+    .step5-complete-detail-label {
+        min-width: auto;
+    }
+}
+
+/* Loading and error states */
+.step5-complete-loading-message,
+.step5-complete-error-message {
+    text-align: center;
+    padding: var(--spacing-2xl);
+    color: var(--gray-500);
+    font-style: italic;
+}
+
+.step5-complete-error-message {
+    color: var(--error-color);
+    background: var(--error-bg);
+    border-radius: var(--border-radius-md);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+
+/* Add to step5-complete.css - Styling for question options in final preview */
+
+/* Question Options in Step 5 Complete */
+.step5-complete-question-options {
+    margin-top: var(--spacing-sm);
+    padding: var(--spacing-sm);
+    background: var(--gray-50);
+    border-radius: var(--border-radius);
+    border-left: 3px solid var(--primary-color);
+}
+
+.step5-complete-options-label {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    color: var(--gray-600);
+    margin-bottom: var(--spacing-xs);
+}
+
+.step5-complete-options-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.step5-complete-option-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-xs);
+    padding: 2px 0;
+}
+
+.step5-complete-option-letter {
+    font-weight: var(--font-weight-semibold);
+    color: var(--primary-color);
+    min-width: 18px;
+    flex-shrink: 0;
+    font-size: var(--font-size-xs);
+}
+
+.step5-complete-option-text {
+    flex: 1;
+    color: var(--gray-600);
+    font-size: var(--font-size-xs);
+    line-height: var(--line-height-normal);
+}
+
+/* Enhanced question content layout */
+.step5-complete-question-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.step5-complete-question-text {
+    font-size: var(--font-size-sm);
+    color: var(--gray-800);
+    margin-bottom: var(--spacing-xs);
+    line-height: var(--line-height-relaxed);
+}
+
+.step5-complete-question-type {
+    font-size: var(--font-size-xs);
+    color: var(--gray-500);
+    font-style: italic;
+    margin-bottom: var(--spacing-xs);
+}
+
+/* Different colors for different question types */
+.step5-complete-question-item[data-type="Multiple Choice"] .step5-complete-question-options {
+    border-left-color: var(--green-500);
+}
+
+.step5-complete-question-item[data-type="True/False"] .step5-complete-question-options {
+    border-left-color: var(--blue-500);
+}
+
+.step5-complete-question-item[data-type="Open-ended"] .step5-complete-question-options {
+    border-left-color: var(--purple-500);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .step5-complete-question-options {
+        padding: var(--spacing-xs);
+    }
+
+    .step5-complete-option-item {
+        flex-direction: row;
+        gap: var(--spacing-xs);
+    }
+
+    .step5-complete-option-letter {
+        min-width: 16px;
+    }
+}
+
+
+/* ADD TO step5-complete.css - Missing styles for questions and prompts */
+
+/* Summary Sections */
+.step5-complete-summary-section {
+    margin-bottom: var(--spacing-xl);
+    padding: var(--spacing-lg);
+    background: var(--background-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-sm);
+}
+
+.step5-complete-summary-section h3 {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--gray-800);
+    margin: 0 0 var(--spacing-md) 0;
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 2px solid var(--gray-100);
+}
+
+.step5-complete-section-header {
+    margin-bottom: var(--spacing-md);
+}
+
+.step5-complete-questions-count,
+.step5-complete-prompts-count {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--gray-600);
+    background: var(--gray-100);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius-full);
+}
+
+/* Questions Preview */
+.step5-complete-questions-preview,
+.step5-complete-prompts-preview {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.step5-complete-question-item {
+    display: flex;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    background: var(--gray-50);
+    border-radius: var(--border-radius);
+    border-left: 4px solid var(--primary-color);
+    transition: all var(--transition-normal);
+}
+
+.step5-complete-question-item:hover {
+    background: var(--gray-100);
+    transform: translateX(2px);
+}
+
+.step5-complete-question-number {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary-color);
+    color: white;
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-sm);
+    border-radius: var(--border-radius-full);
+}
+
+.step5-complete-question-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.step5-complete-question-text {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    color: var(--gray-800);
+    margin-bottom: var(--spacing-xs);
+    line-height: var(--line-height-relaxed);
+}
+
+.step5-complete-question-type {
+    font-size: var(--font-size-xs);
+    color: var(--gray-500);
+    font-style: italic;
+    margin-bottom: var(--spacing-sm);
+}
+
+/* Question Options Styling */
+.step5-complete-question-options {
+    margin-top: var(--spacing-sm);
+    padding: var(--spacing-sm);
+    background: white;
+    border-radius: var(--border-radius);
+    border-left: 3px solid var(--green-500);
+}
+
+.step5-complete-options-label {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    color: var(--gray-600);
+    margin-bottom: var(--spacing-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.step5-complete-options-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.step5-complete-option-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-xs) 0;
+}
+
+.step5-complete-option-letter {
+    font-weight: var(--font-weight-bold);
+    color: var(--green-600);
+    min-width: 20px;
+    flex-shrink: 0;
+    font-size: var(--font-size-sm);
+}
+
+.step5-complete-option-text {
+    flex: 1;
+    color: var(--gray-700);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-normal);
+}
+
+/* Prompts Styling */
+.step5-complete-prompt-item {
+    display: flex;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    background: var(--blue-50);
+    border-radius: var(--border-radius);
+    border-left: 4px solid var(--blue-500);
+    transition: all var(--transition-normal);
+}
+
+.step5-complete-prompt-item:hover {
+    background: var(--blue-100);
+    transform: translateX(2px);
+}
+
+.step5-complete-prompt-number {
+    flex-shrink: 0;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    color: var(--blue-600);
+    background: var(--blue-100);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius-full);
+    white-space: nowrap;
+}
+
+.step5-complete-prompt-text {
+    flex: 1;
+    font-size: var(--font-size-base);
+    color: var(--gray-700);
+    line-height: var(--line-height-relaxed);
+}
+
+/* No Content Messages */
+.step5-complete-no-content-message {
+    text-align: center;
+    color: var(--gray-500);
+    font-style: italic;
+    padding: var(--spacing-xl);
+    background: var(--gray-50);
+    border-radius: var(--border-radius);
+    border: 2px dashed var(--gray-300);
+}
+
+/* Different question type colors */
+.step5-complete-question-item[data-type="Multiple Choice"] {
+    border-left-color: var(--green-500);
+}
+
+.step5-complete-question-item[data-type="Multiple Choice"] .step5-complete-question-options {
+    border-left-color: var(--green-500);
+}
+
+.step5-complete-question-item[data-type="Multiple Choice"] .step5-complete-option-letter {
+    color: var(--green-600);
+}
+
+.step5-complete-question-item[data-type="True/False"] {
+    border-left-color: var(--blue-500);
+}
+
+.step5-complete-question-item[data-type="True/False"] .step5-complete-question-options {
+    border-left-color: var(--blue-500);
+}
+
+.step5-complete-question-item[data-type="True/False"] .step5-complete-option-letter {
+    color: var(--blue-600);
+}
+
+.step5-complete-question-item[data-type="Open-ended"] {
+    border-left-color: var(--purple-500);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .step5-complete-question-item,
+    .step5-complete-prompt-item {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+
+    .step5-complete-question-number {
+        align-self: flex-start;
+    }
+
+    .step5-complete-option-item {
+        flex-direction: row;
+        gap: var(--spacing-xs);
+    }
+
+    .step5-complete-option-letter {
+        min-width: 18px;
+    }
+}
+
+/* Print styles */
+@media print {
+    .step5-complete-question-options,
+    .step5-complete-prompt-item {
+        break-inside: avoid;
+    }
+
+    .step5-complete-question-item {
+        margin-bottom: var(--spacing-md);
+        break-inside: avoid;
+    }
+}

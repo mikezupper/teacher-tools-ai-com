@@ -1,0 +1,31 @@
+/* ==========================================================================
+   MAIN CSS - Master import file for Teachers Story Tool
+   ========================================================================== */
+
+/* Global foundation styles - must be imported first */
+@import './global.css';
+
+/* ==========================================================================
+   COMPONENT STYLES
+   All web components used throughout the application
+   ========================================================================== */
+
+/* Navigation & Layout Components */
+@import './components/header-component.css';
+@import './components/footer-component.css';
+
+/* Wizard System Components */
+@import './components/story-generation-wizard.css';
+@import './components/wizard-progress.css';
+@import './components/wizard-navigation.css';
+
+/* Step Components - Wizard Flow */
+@import './components/step1-topic.css';
+@import './components/step2-image.css';
+@import './components/step3-questions.css';
+@import './components/step4-prompts.css';
+@import './components/step5-complete.css';
+
+/* Dashboard & Management */
+@import './components/story-dashboard.css';
+@import './components/toast-component.css';

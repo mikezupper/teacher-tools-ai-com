@@ -1,0 +1,580 @@
+/* ==========================================================================
+   STEP 4 PROMPTS COMPONENT - Thinking prompts generation and management
+   ========================================================================== */
+
+/* Root Container */
+step4-prompts {
+    display: block;
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.step4-prompts-root {
+    padding: var(--spacing-xl);
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    animation: slideIn var(--transition-normal);
+    box-sizing: border-box;
+    min-height: 0; /* Allow flexbox shrinking */
+}
+
+/* Header */
+.step4-prompts-header {
+    color: var(--primary-color);
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--spacing-lg);
+    text-align: center;
+    border-bottom: 2px solid var(--gray-100);
+    padding-bottom: var(--spacing-md);
+    flex-shrink: 0;
+}
+
+/* Input Section */
+.step4-prompts-input-section {
+    margin-bottom: var(--spacing-xl);
+    padding: var(--spacing-lg);
+    background: var(--background-secondary);
+    border-radius: var(--border-radius-md);
+    border: 1px solid var(--gray-200);
+    flex-shrink: 0;
+}
+
+.step4-prompts-input-section p {
+    font-size: var(--font-size-lg);
+    color: var(--gray-700);
+    margin-bottom: var(--spacing-lg);
+    line-height: var(--line-height-relaxed);
+    text-align: center;
+}
+
+/* Count Selection */
+.step4-prompts-count-select {
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto var(--spacing-lg);
+    padding: var(--spacing-md);
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    background: var(--background-primary);
+    color: var(--gray-700);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    display: block;
+    box-sizing: border-box;
+}
+
+.step4-prompts-count-select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    transform: translateY(-1px);
+}
+
+.step4-prompts-count-select:hover {
+    border-color: var(--primary-color);
+    background: rgba(102, 126, 234, 0.02);
+}
+
+/* Actions */
+.step4-prompts-actions {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.step4-prompts-actions--preview {
+    margin-top: var(--spacing-xl);
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid var(--gray-200);
+    flex-shrink: 0;
+}
+
+.step4-prompts-btn-generate {
+    background: var(--primary-gradient);
+    color: white;
+    border: none;
+    padding: var(--spacing-md) var(--spacing-xl);
+    border-radius: var(--border-radius-md);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    box-shadow: var(--shadow-primary);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    flex-shrink: 0;
+}
+
+.step4-prompts-btn-generate:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-primary-lg);
+}
+
+.step4-prompts-btn-generate:disabled {
+    background: var(--gray-400);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.step4-prompts-btn-generate::before {
+    content: '💭';
+    font-size: var(--font-size-lg);
+}
+
+.step4-prompts-btn-cancel {
+    background: linear-gradient(135deg, var(--warning-color), var(--warning-dark));
+    color: white;
+    border: none;
+    padding: var(--spacing-md) var(--spacing-xl);
+    border-radius: var(--border-radius-md);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    box-shadow: 0 4px 15px rgba(255, 152, 0, 0.2);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    flex-shrink: 0;
+}
+
+.step4-prompts-btn-cancel:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 152, 0, 0.3);
+}
+
+.step4-prompts-btn-cancel::before {
+    content: '⏹️';
+    font-size: var(--font-size-base);
+}
+
+.step4-prompts-btn-skip {
+    background: linear-gradient(135deg, var(--gray-500), var(--gray-600));
+    color: white;
+    border: none;
+    padding: var(--spacing-md) var(--spacing-xl);
+    border-radius: var(--border-radius-md);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    box-shadow: var(--shadow);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    flex-shrink: 0;
+}
+
+.step4-prompts-btn-skip:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    background: linear-gradient(135deg, var(--gray-600), var(--gray-700));
+}
+
+.step4-prompts-btn-skip::before {
+    content: '⏭️';
+    font-size: var(--font-size-base);
+}
+
+.step4-prompts-btn-regenerate {
+    background: linear-gradient(135deg, var(--warning-color), var(--warning-dark));
+    color: white;
+    border: none;
+    padding: var(--spacing-md) var(--spacing-xl);
+    border-radius: var(--border-radius-md);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    box-shadow: 0 4px 15px rgba(255, 152, 0, 0.2);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    flex-shrink: 0;
+}
+
+.step4-prompts-btn-regenerate:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 152, 0, 0.3);
+}
+
+.step4-prompts-btn-regenerate::before {
+    content: '🔄';
+    font-size: var(--font-size-base);
+}
+
+.step4-prompts-btn-continue {
+    background: linear-gradient(135deg, var(--success-color), var(--success-dark));
+    color: white;
+    border: none;
+    padding: var(--spacing-md) var(--spacing-xl);
+    border-radius: var(--border-radius-md);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.2);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    flex-shrink: 0;
+}
+
+.step4-prompts-btn-continue:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3);
+}
+
+.step4-prompts-btn-continue::before {
+    content: '✅';
+    font-size: var(--font-size-base);
+}
+
+/* Preview Section */
+.step4-prompts-preview-section {
+    margin-top: var(--spacing-xl);
+    padding: var(--spacing-lg);
+    background: var(--background-secondary);
+    border-radius: var(--border-radius-md);
+    border: 1px solid var(--gray-200);
+    animation: fadeIn var(--transition-slow);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0; /* Allow flexbox shrinking */
+    overflow-y: auto;
+}
+
+/* No Content Message */
+.step4-prompts-no-message {
+    text-align: center;
+    color: var(--gray-500);
+    font-style: italic;
+    padding: var(--spacing-2xl);
+    background: var(--gray-50);
+    border-radius: var(--border-radius);
+    border: 2px dashed var(--gray-300);
+    margin: var(--spacing-lg) 0;
+}
+
+.step4-prompts-no-message::before {
+    content: '💭';
+    display: block;
+    font-size: var(--font-size-4xl);
+    opacity: 0.3;
+    margin-bottom: var(--spacing-md);
+}
+
+/* Prompts List */
+.step4-prompts-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+    flex: 1;
+    overflow-y: auto;
+}
+
+.step4-prompts-item {
+    background: var(--background-primary);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-lg);
+    border: 1px solid var(--gray-200);
+    transition: all var(--transition-normal);
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    border-left: 4px solid var(--success-color);
+}
+
+.step4-prompts-item:hover {
+    border-color: var(--primary-color);
+    border-left-color: var(--success-color);
+    box-shadow: var(--shadow);
+    transform: translateY(-2px);
+}
+
+.step4-prompts-number {
+    font-weight: var(--font-weight-bold);
+    color: var(--success-color);
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--spacing-sm);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.step4-prompts-number::before {
+    content: '💭';
+    font-size: var(--font-size-base);
+}
+
+.step4-prompts-text {
+    color: var(--gray-800);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-relaxed);
+    margin: 0;
+}
+
+/* Enhanced Prompt Item Styling */
+.step4-prompts-item::before {
+    content: '';
+    position: absolute;
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+    width: 8px;
+    height: 8px;
+    background: var(--success-color);
+    border-radius: var(--border-radius-full);
+    opacity: 0.6;
+}
+
+/* Status Messages */
+.step4-prompts-status {
+    margin: var(--spacing-md) 0;
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius);
+    font-weight: var(--font-weight-medium);
+    border-left: 4px solid transparent;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.step4-prompts-status.loading {
+    background: var(--status-loading-bg);
+    color: var(--status-loading-color);
+    border-left-color: var(--info-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+}
+
+.step4-prompts-status.loading::before {
+    content: '';
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--gray-300);
+    border-top: 2px solid var(--info-color);
+    border-radius: var(--border-radius-full);
+    animation: spin 1s linear infinite;
+}
+
+.step4-prompts-status.success {
+    background: var(--status-success-bg);
+    color: var(--status-success-color);
+    border-left-color: var(--success-color);
+}
+
+.step4-prompts-status.error {
+    background: var(--status-error-bg);
+    color: var(--status-error-color);
+    border-left-color: var(--error-color);
+}
+
+.step4-prompts-status.info {
+    background: var(--status-info-bg);
+    color: var(--status-info-color);
+    border-left-color: var(--gray-400);
+}
+
+/* Loading State Specific Styling */
+.step4-prompts-root.loading {
+    pointer-events: none;
+    opacity: 0.8;
+}
+
+.step4-prompts-root.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--gray-200);
+    border-top: 4px solid var(--primary-color);
+    border-radius: var(--border-radius-full);
+    animation: spin 1s linear infinite;
+    z-index: var(--z-modal);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .step4-prompts-root {
+        padding: var(--spacing-lg);
+    }
+
+    .step4-prompts-header {
+        font-size: var(--font-size-xl);
+    }
+
+    .step4-prompts-input-section,
+    .step4-prompts-preview-section {
+        padding: var(--spacing-md);
+    }
+
+    .step4-prompts-count-select {
+        max-width: none;
+    }
+
+    .step4-prompts-actions,
+    .step4-prompts-actions--preview {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .step4-prompts-btn-generate,
+    .step4-prompts-btn-cancel,
+    .step4-prompts-btn-skip,
+    .step4-prompts-btn-regenerate,
+    .step4-prompts-btn-continue {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .step4-prompts-item {
+        padding: var(--spacing-md);
+    }
+
+    .step4-prompts-no-message {
+        padding: var(--spacing-lg);
+    }
+}
+
+@media (max-width: 480px) {
+    .step4-prompts-root {
+        padding: var(--spacing-md);
+    }
+
+    .step4-prompts-header {
+        font-size: var(--font-size-lg);
+    }
+
+    .step4-prompts-input-section p {
+        font-size: var(--font-size-base);
+    }
+
+    .step4-prompts-list {
+        gap: var(--spacing-md);
+    }
+
+    .step4-prompts-item {
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+
+    .step4-prompts-number {
+        font-size: var(--font-size-base);
+    }
+
+    .step4-prompts-text {
+        font-size: var(--font-size-sm);
+    }
+}
+
+/* Focus and Accessibility */
+.step4-prompts-count-select:focus,
+.step4-prompts-btn-generate:focus,
+.step4-prompts-btn-cancel:focus,
+.step4-prompts-btn-skip:focus,
+.step4-prompts-btn-regenerate:focus,
+.step4-prompts-btn-continue:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .step4-prompts-input-section,
+    .step4-prompts-preview-section {
+        border: 2px solid var(--gray-400);
+    }
+
+    .step4-prompts-item {
+        border: 2px solid var(--gray-400);
+        border-left: 4px solid var(--success-color);
+    }
+
+    .step4-prompts-item:hover {
+        border-color: var(--primary-color);
+        border-left-color: var(--success-color);
+    }
+
+    .step4-prompts-no-message {
+        border: 2px solid var(--gray-500);
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .step4-prompts-root,
+    .step4-prompts-preview-section,
+    .step4-prompts-item,
+    .step4-prompts-count-select,
+    .step4-prompts-status.loading::before,
+    .step4-prompts-root.loading::after {
+        animation: none;
+        transition: none;
+    }
+
+    .step4-prompts-btn-generate:hover,
+    .step4-prompts-btn-cancel:hover,
+    .step4-prompts-btn-skip:hover,
+    .step4-prompts-btn-regenerate:hover,
+    .step4-prompts-btn-continue:hover {
+        transform: none;
+    }
+
+    .step4-prompts-item:hover {
+        transform: none;
+    }
+
+    .step4-prompts-count-select:focus {
+        transform: none;
+    }
+}
+
+/* Print styles */
+@media print {
+    .step4-prompts-root {
+        height: auto;
+        padding: var(--spacing-lg);
+    }
+
+    .step4-prompts-preview-section {
+        flex: none;
+        overflow: visible;
+    }
+
+    .step4-prompts-list {
+        overflow: visible;
+    }
+
+    .step4-prompts-actions,
+    .step4-prompts-actions--preview,
+    .step4-prompts-status {
+        display: none;
+    }
+
+    .step4-prompts-item {
+        page-break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid var(--gray-400);
+        border-left: 4px solid var(--success-color);
+    }
+
+    .step4-prompts-item::before {
+        display: none;
+    }
+}

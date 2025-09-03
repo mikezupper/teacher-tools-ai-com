@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+    <title>AITeacherTools.com: Story Generator – Dashboard</title>
+    <link rel="stylesheet" href="/src/styles/pages/dashboard.css"/>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=%VITE_GOOGLE_TAG_ID%"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', '%VITE_GOOGLE_TAG_ID%');
+    </script>
+</head>
+<body>
+<div class="container">
+    <header-component></header-component>
+    <story-dashboard></story-dashboard>
+    <footer-component></footer-component>
+</div>
+<script type="module">
+    import '/src/components/header-component.js';
+    import '/src/components/footer-component.js';
+    import '/src/components/story-dashboard.js';
+</script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+/* ==========================================================================
+   DASHBOARD CSS - Dashboard file for Teachers Story Tool
+   ========================================================================== */
+
+/* Global foundation styles - must be imported first */
+@import '../global.css';
+
+/* ==========================================================================
+   COMPONENT STYLES
+   All web components used throughout the application
+   ========================================================================== */
+
+/* Navigation & Layout Components */
+@import '../components/header-component.css';
+@import '../components/footer-component.css';
+
+/* Dashboard & Management */
+@import '../components/story-dashboard.css';
