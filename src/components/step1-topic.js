@@ -8,6 +8,7 @@ import { generateRandomStoryInput } from '../story-gen-pipeline/randomizer.js';
 import {saveStory, getStoryById$} from '../db/StoryAppDB.js';
 import { createAbortableOperation } from '../utils/abortable.js';
 import {extractStoryContent} from "../api/util.js";
+import { StoryGenerationStatusAdapter } from '../StoryGenerationStatusAdapter.js';
 
 class Step1Topic extends LitElement {
     static properties = {
@@ -68,7 +69,7 @@ class Step1Topic extends LitElement {
                         this.currentStory = story;
 
                         this.showPreview = this.hasStoryContent(story) && story.title;
-                        console.log("updated storyId: ", this.story,this.showPreview,story);
+                        // console.log("updated storyId: ", this.story,this.showPreview,story);
                         this.requestUpdate();
                     },
                     error: err => console.error('liveQuery error:', err),
@@ -121,7 +122,6 @@ class Step1Topic extends LitElement {
     }
 
     hasStoryContent(story) {
-        console.log("hasStoryContent",story)
         // Check new structured format
         if (story?.paragraphs && Array.isArray(story.paragraphs) && story.paragraphs.length > 0) {
             return story.paragraphs.some(paragraph =>
@@ -136,24 +136,19 @@ class Step1Topic extends LitElement {
     }
 
     async handleRandomize() {
-        console.log('🎲 handleRandomize called');
+        console.log('🎲 handleRandomize Start');
         if (!this.gradeLevel || this.gradeLevel === '') {
             toast.error('Please select a grade level first.');
             return;
         }
         this.operation = createAbortableOperation();
-        console.log('🎲 Created abort operation:', this.operation);
 
         this.currentAction = 'Generating random parameters...';
         this.isGenerating = true;
-        console.log('🎲 Set isGenerating to true');
 
         this.loadingToastId = toast.loading('Generating random parameters...');
 
         try {
-            console.log('🎲 About to call operation.execute...');
-
-            // FIX: Use a wrapper function that properly passes the signal
             const randomParams = await this.operation.execute((signal) => {
                 return generateRandomStoryInput({
                     gradeLevel: this.gradeLevel || undefined,
@@ -192,11 +187,9 @@ class Step1Topic extends LitElement {
                 toast.error('Failed to generate random parameters');
             }
         } finally {
-            console.log('🎲 handleRandomize finally block');
             this.isGenerating = false;
             this.currentAction = null;
             this.operation = null;
-            console.log('🎲 Reset isGenerating to false');
         }
     }
 
@@ -214,6 +207,9 @@ class Step1Topic extends LitElement {
         this.currentAction = 'Generating your story...';
         this.isGenerating = true;
         this.loadingToastId = toast.loading('Generating your story...');
+        const statusAdapter = new StoryGenerationStatusAdapter((statusMessage) => {
+            this.currentAction = statusMessage;
+        });
 
         try {
             const formData = {
@@ -223,7 +219,10 @@ class Step1Topic extends LitElement {
                 length: this.length,
                 genre: this.genre
             };
-            const newStory = await this.operation.execute(generateStory, formData);
+            const newStory = await this.operation.execute((signal) =>
+                generateStory(formData, signal, statusAdapter)
+            );
+
             if (this.isEditMode && this.currentStory?.id) {
                 newStory.id = this.currentStory.id;
             }

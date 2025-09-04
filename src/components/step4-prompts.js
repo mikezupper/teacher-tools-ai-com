@@ -19,7 +19,8 @@ class Step4Prompts extends LitElement {
         statusMessage: { type: String, state: true },
         statusType: { type: String, state: true },
         isGenerating: { type: Boolean, state: true },
-        isInitialized: { type: Boolean, state: true }
+        isInitialized: { type: Boolean, state: true },
+        currentAction:  { type: String, state: true }
     };
 
     constructor() {
@@ -34,6 +35,8 @@ class Step4Prompts extends LitElement {
         this.isGenerating = false;
         this.isInitialized = false;
         this.operation = null;
+        this.currentAction = null;
+        this.loadingToastId = null;
     }
     createRenderRoot() {
         // Render into the light DOM instead of attaching a shadow root
@@ -93,12 +96,21 @@ class Step4Prompts extends LitElement {
         this.selectedCount = parseInt(e.target.value, 10);
     }
 
-    async handleGenerate() {
-        if (this.isGenerating) {
-            this.operation?.cancel();
-            this.isGenerating = false;
-            return;
+    handleCancel() {
+        console.log('💭 handleCancel called');
+        console.log('💭 Current operation:', this.operation);
+        console.log('💭 isGenerating:', this.isGenerating);
+
+        if (this.operation) {
+            console.log('💭 Calling operation.cancel()');
+            this.operation.cancel();
+            console.log('💭 operation.cancel() completed');
+        } else {
+            console.log('💭 No operation to cancel');
         }
+    }
+
+    async handleGenerate() {
         if (!this.validateStoryData()) return;
         if (this.selectedCount === 0) {
             await this.handleSkip();
@@ -106,39 +118,57 @@ class Step4Prompts extends LitElement {
         }
         await this.performGeneration();
     }
+
     async handleRegenerate() {
-        if (this.isGenerating) {
-            this.operation?.cancel();
-            this.isGenerating = false;
-            return;
-        }
         if (!this.validateStoryData()) return;
         await this.performGeneration();
     }
 
     async performGeneration() {
         this.operation = createAbortableOperation();
+        this.currentAction = 'Preparing prompt generation...';
         this.isGenerating = true;
         this.showStatus('Generating prompts…', 'loading');
+
         try {
-            const prompts = await this.operation.execute(
-                generatePrompts,
-                this.story,
-                this.selectedCount
-            );
+            // Update status during generation
+            this.currentAction = '💭 Creating thinking prompts...';
+            this.requestUpdate();
+
+            const prompts = await this.operation.execute((signal) => {
+                // Update status based on prompt count
+                if (this.selectedCount === 1) {
+                    this.currentAction = '🎯 Crafting focused thinking prompt...';
+                } else if (this.selectedCount === 2) {
+                    this.currentAction = '🤔 Generating paired thinking prompts...';
+                } else {
+                    this.currentAction = '📝 Creating comprehensive prompt set...';
+                }
+                this.requestUpdate();
+
+                return generatePrompts(this.story, this.selectedCount, signal);
+            });
+
+            this.currentAction = '💾 Saving generated prompts...';
+            this.requestUpdate();
+
             this.prompts = prompts;
             await savePrompts(this.storyId, prompts);
             this.showPreview = true;
             this.showStatus('Prompts generated successfully!', 'success');
+
         } catch (err) {
             if (err.name === 'AbortError') {
-                this.showStatus('Generation cancelled.', 'info');
+                this.showStatus('Prompt generation cancelled.', 'info');
+                this.currentAction = 'Prompt generation cancelled';
             } else {
                 console.error(err);
                 this.showStatus('Error generating prompts. Try again.', 'error');
+                this.currentAction = 'Prompt generation failed';
             }
         } finally {
             this.isGenerating = false;
+            this.currentAction = null;
             this.operation = null;
         }
     }
@@ -254,20 +284,18 @@ class Step4Prompts extends LitElement {
     renderInputSection() {
         if (!this.showInput) return '';
         return html`
-            <div
-                    class="step4-prompts-input-section"
-                    title="Configure how many prompts to generate"
-                    aria-label="Prompt options"
-            >
+            <div class="step4-prompts-input-section" 
+                 title="Configure how many prompts to generate"
+                 aria-label="Prompt options">
                 <p title="Choose number of prompts">
                     How many thinking prompts would you like to generate?
                 </p>
 
                 <select
-                        class="step4-prompts-count-select"
-                        .value=${this.selectedCount}
-                        @change=${this.handleCountChange}
-                        title="Select number of prompts"
+                    class="step4-prompts-count-select"
+                    .value=${this.selectedCount}
+                    @change=${this.handleCountChange}
+                    title="Select number of prompts"
                 >
                     <option value="0">No prompts</option>
                     <option value="1">1 Prompt</option>
@@ -276,31 +304,38 @@ class Step4Prompts extends LitElement {
                 </select>
 
                 <div class="step4-prompts-actions" aria-label="Actions">
-                    <button
+                    ${this.isGenerating ? html`
+                        <!-- Show status and cancel when generating -->
+                        <div class="generating-state">
+                            <span class="generating-text">
+                                ${this.currentAction || 'Processing...'}
+                            </span>
+                            <button
+                                type="button"
+                                class="btn-cancel"
+                                @click=${this.handleCancel}
+                                title="Cancel prompt generation"
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    ` : html`
+                        <!-- Show normal buttons when not generating -->
+                        <button
                             class="step4-prompts-btn-generate"
                             @click=${this.handleGenerate}
-                            ?disabled=${this.isGenerating}
                             title="Generate thinking prompts"
-                    >
-                        ${this.isGenerating ? 'Generating…' : 'Generate Prompts'}
-                    </button>
-                    ${this.isGenerating ? html`
-                        <button
-                                class="step4-prompts-btn-cancel"
-                                @click=${this.handleGenerate}
-                                title="Cancel prompts generation"
                         >
-                            Cancel
+                            Generate Prompts
                         </button>
-                    ` : ''}
-                    <button
+                        <button
                             class="step4-prompts-btn-skip"
                             @click=${this.handleSkip}
-                            ?disabled=${this.isGenerating}
                             title="Skip thinking prompts"
-                    >
-                        Skip Prompts
-                    </button>
+                        >
+                            Skip Prompts
+                        </button>
+                    `}
                 </div>
             </div>
         `;
@@ -317,11 +352,9 @@ class Step4Prompts extends LitElement {
             `;
         }
         return html`
-            <div
-                    class="step4-prompts-preview-section"
-                    title="Generated thinking prompts"
-                    aria-label="Prompts preview"
-            >
+            <div class="step4-prompts-preview-section"
+                 title="Generated thinking prompts"
+                 aria-label="Prompts preview">
                 <ul class="step4-prompts-list">
                     ${this.prompts.map((p, i) => html`
                         <li class="step4-prompts-item" title="${p}">
@@ -331,22 +364,38 @@ class Step4Prompts extends LitElement {
                     `)}
                 </ul>
                 <div class="step4-prompts-actions--preview" aria-label="Preview actions">
-                    <button
+                    ${this.isGenerating ? html`
+                        <!-- Show status and cancel when regenerating -->
+                        <div class="generating-state">
+                            <span class="generating-text">
+                                ${this.currentAction || 'Processing...'}
+                            </span>
+                            <button
+                                type="button"
+                                class="btn-cancel"
+                                @click=${this.handleCancel}
+                                title="Cancel prompt regeneration"
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    ` : html`
+                        <!-- Show normal buttons when not generating -->
+                        <button
                             class="step4-prompts-btn-regenerate"
                             @click=${this.handleRegenerate}
-                            ?disabled=${this.isGenerating}
                             title="Regenerate prompts"
-                    >
-                        ${this.isGenerating ? 'Generating…' : 'Regenerate Prompts'}
-                    </button>
-                    <button
+                        >
+                            Regenerate Prompts
+                        </button>
+                        <button
                             class="step4-prompts-btn-continue"
                             @click=${this.handleContinue}
-                            ?disabled=${this.isGenerating}
                             title="Continue with these prompts"
-                    >
-                        Continue with These Prompts
-                    </button>
+                        >
+                            Continue with These Prompts
+                        </button>
+                    `}
                 </div>
             </div>
         `;

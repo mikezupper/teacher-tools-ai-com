@@ -326,9 +326,6 @@ class StoryDashboard extends LitElement {
             ></div>
           </div>
           <div class="story-card-progress-text">${progressPct}%</div>
-          <div class="story-card-step-text">
-            Step ${Math.min(story.currentStep || 0, TOTAL_STEPS)} of ${TOTAL_STEPS}
-          </div>
         </div>
 
         <div class="story-card-actions" aria-label="Story actions">

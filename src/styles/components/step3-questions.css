@@ -151,29 +151,6 @@ step3-questions {
     box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
 }
 
-.step3-questions-custom-type-input {
-    flex: 1;
-    padding: var(--spacing-sm) var(--spacing-md);
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-    font-size: var(--font-size-sm);
-    background: var(--background-primary);
-    margin-left: var(--spacing-sm);
-    transition: border-color var(--transition-normal);
-    box-sizing: border-box;
-}
-
-.step3-questions-custom-type-input:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
-}
-
-.step3-questions-custom-type-input::placeholder {
-    color: var(--gray-400);
-    font-style: italic;
-}
-
 /* Actions */
 .step3-questions-actions {
     display: flex;
@@ -181,6 +158,71 @@ step3-questions {
     margin-top: var(--spacing-lg);
     flex-wrap: wrap;
     justify-content: center;
+}
+
+/* Generating state container - matches step1-topic.css pattern */
+.generating-state {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-md);
+    background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+    border-radius: var(--border-radius-md);
+    border: 2px solid var(--primary-light);
+    animation: pulse-border 2s infinite;
+    min-width: 300px;
+    gap: var(--spacing-md);
+}
+
+.generating-text {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    color: var(--gray-700);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    flex: 1;
+}
+
+.generating-text::before {
+    content: '⏳';
+    animation: spin 2s linear infinite;
+}
+
+/* Cancel button styling - matches step1-topic.css */
+.btn-cancel {
+    background: linear-gradient(135deg, var(--error-color), #dc2626);
+    color: white;
+    border: none;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border-radius: var(--border-radius-md);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    flex-shrink: 0;
+}
+
+.btn-cancel:hover {
+    background: linear-gradient(135deg, #dc2626, #b91c1c);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3);
+}
+
+.btn-cancel:active {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
+}
+
+/* Ensure generating state takes appropriate width */
+.step3-questions-actions .generating-state {
+    flex: 1;
+    min-width: 300px;
+    max-width: 500px;
 }
 
 .step3-questions-btn-generate {
@@ -217,6 +259,7 @@ step3-questions {
     font-size: var(--font-size-lg);
 }
 
+/* Original Cancel Button (keeping for compatibility) */
 .step3-questions-btn-cancel {
     background: linear-gradient(135deg, var(--warning-color), var(--warning-dark));
     color: white;
@@ -352,14 +395,14 @@ step3-questions {
 
 .step3-questions-item {
     display: flex;
-    gap: var(--spacing-md);
+    flex-direction: column;
     padding: var(--spacing-lg);
     margin-bottom: var(--spacing-md);
     background: var(--background-primary);
+    border: 1px solid var(--border-color);
     border-radius: var(--border-radius-md);
-    border: 1px solid var(--gray-200);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     transition: all var(--transition-normal);
-    box-shadow: var(--shadow-sm);
 }
 
 .step3-questions-item:last-child {
@@ -367,41 +410,85 @@ step3-questions {
 }
 
 .step3-questions-item:hover {
-    border-color: var(--primary-color);
-    box-shadow: var(--shadow);
     transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .step3-questions-item-header {
-    flex-shrink: 0;
-    width: 40px;
-    height: 40px;
-    background: var(--primary-color);
-    color: white;
-    border-radius: var(--border-radius-full);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: var(--font-weight-bold);
     font-size: var(--font-size-sm);
-}
-
-.step3-questions-item-content {
-    flex: 1;
-}
-
-.step3-questions-item-text {
-    color: var(--gray-800);
-    font-size: var(--font-size-base);
-    line-height: var(--line-height-relaxed);
+    font-weight: var(--font-weight-bold);
+    color: var(--primary-color);
     margin-bottom: var(--spacing-sm);
 }
 
+.step3-questions-item-text {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    color: var(--gray-800);
+    margin-bottom: var(--spacing-sm);
+    line-height: var(--line-height-relaxed);
+}
+
 .step3-questions-item-type {
+    font-size: var(--font-size-xs);
     color: var(--gray-500);
-    font-size: var(--font-size-sm);
     font-style: italic;
-    margin-top: var(--spacing-xs);
+    margin-bottom: var(--spacing-sm);
+}
+
+/* Question Options Styling */
+.step3-questions-item-options {
+    margin-top: var(--spacing-md);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--gray-50);
+    border-radius: var(--border-radius);
+    border-left: 3px solid var(--primary-color);
+}
+
+.step3-questions-options-label {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--gray-700);
+    margin-bottom: var(--spacing-sm);
+}
+
+.step3-questions-options-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.step3-questions-option-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-xs) 0;
+}
+
+.step3-questions-option-letter {
+    font-weight: var(--font-weight-semibold);
+    color: var(--primary-color);
+    min-width: 20px;
+    flex-shrink: 0;
+}
+
+.step3-questions-option-text {
+    flex: 1;
+    color: var(--gray-700);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-relaxed);
+}
+
+/* Different styling for True/False vs Multiple Choice */
+.step3-questions-item[data-type="True/False"] .step3-questions-item-options {
+    border-left-color: var(--blue-500);
+}
+
+.step3-questions-item[data-type="Multiple Choice"] .step3-questions-item-options {
+    border-left-color: var(--green-500);
 }
 
 /* Status Messages */
@@ -489,6 +576,47 @@ step3-questions {
     background: var(--error-dark);
 }
 
+/* Animations */
+@keyframes pulse-border {
+    0%, 100% {
+        border-color: var(--primary-light);
+    }
+    50% {
+        border-color: var(--primary-color);
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .step3-questions-root {
@@ -499,30 +627,28 @@ step3-questions {
         font-size: var(--font-size-xl);
     }
 
-    .step3-questions-input-section,
-    .step3-questions-types-container,
-    .step3-questions-preview-section {
-        padding: var(--spacing-md);
-    }
-
-    .step3-questions-type-row {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: var(--spacing-sm);
-    }
-
-    .step3-questions-type-label {
-        min-width: auto;
-    }
-
-    .step3-questions-custom-type-input {
-        margin-left: 0;
-        margin-top: var(--spacing-sm);
-    }
-
     .step3-questions-actions {
         flex-direction: column;
         align-items: stretch;
+        gap: var(--spacing-sm);
+    }
+
+    .generating-state {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+        text-align: center;
+        min-width: unset;
+        width: 100%;
+    }
+
+    .step3-questions-actions .generating-state {
+        min-width: unset;
+        width: 100%;
+    }
+
+    .btn-cancel {
+        width: 100%;
+        justify-content: center;
     }
 
     .step3-questions-btn-generate,
@@ -534,13 +660,23 @@ step3-questions {
         justify-content: center;
     }
 
-    .step3-questions-item {
-        flex-direction: column;
-        gap: var(--spacing-sm);
+    .step3-questions-input-section,
+    .step3-questions-preview-section {
+        padding: var(--spacing-md);
     }
 
-    .step3-questions-item-header {
-        align-self: flex-start;
+    .step3-questions-item {
+        padding: var(--spacing-md);
+    }
+
+    .step3-questions-option-item {
+        flex-direction: column;
+        gap: var(--spacing-xs);
+        align-items: flex-start;
+    }
+
+    .step3-questions-option-letter {
+        min-width: auto;
     }
 }
 
@@ -557,6 +693,12 @@ step3-questions {
         font-size: var(--font-size-base);
     }
 
+    .step3-questions-types-container,
+    .step3-questions-preview-section {
+        padding: var(--spacing-sm);
+        gap: var(--spacing-md);
+    }
+
     .step3-questions-error-section {
         padding: var(--spacing-lg);
     }
@@ -565,12 +707,13 @@ step3-questions {
 /* Focus and Accessibility */
 .step3-questions-count-option input[type="radio"]:focus,
 .step3-questions-type-select:focus,
-.step3-questions-custom-type-input:focus,
 .step3-questions-btn-generate:focus,
 .step3-questions-btn-cancel:focus,
 .step3-questions-btn-skip:focus,
 .step3-questions-btn-regenerate:focus,
-.step3-questions-btn-continue:focus {
+.step3-questions-btn-continue:focus,
+.step3-questions-error-section button:focus,
+.btn-cancel:focus {
     outline: 2px solid var(--primary-color);
     outline-offset: 2px;
 }
@@ -591,6 +734,10 @@ step3-questions {
     .step3-questions-item:hover {
         border-color: var(--primary-color);
     }
+
+    .generating-state {
+        border: 2px solid var(--primary-color);
+    }
 }
 
 /* Reduced motion support */
@@ -599,7 +746,8 @@ step3-questions {
     .step3-questions-types-container,
     .step3-questions-preview-section,
     .step3-questions-item,
-    .step3-questions-status.loading::before {
+    .step3-questions-status.loading::before,
+    .generating-text::before {
         animation: none;
         transition: none;
     }
@@ -609,7 +757,8 @@ step3-questions {
     .step3-questions-btn-skip:hover,
     .step3-questions-btn-regenerate:hover,
     .step3-questions-btn-continue:hover,
-    .step3-questions-error-section button:hover {
+    .step3-questions-error-section button:hover,
+    .btn-cancel:hover {
         transform: none;
     }
 
@@ -644,119 +793,8 @@ step3-questions {
         box-shadow: none;
         border: 1px solid var(--gray-400);
     }
-}
 
-
-/* Add to step3-questions.css - Styling for question options */
-
-/* Question Options Styling */
-.step3-questions-item-options {
-    margin-top: var(--spacing-md);
-    padding: var(--spacing-sm) var(--spacing-md);
-    background: var(--gray-50);
-    border-radius: var(--border-radius);
-    border-left: 3px solid var(--primary-color);
-}
-
-.step3-questions-options-label {
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-semibold);
-    color: var(--gray-700);
-    margin-bottom: var(--spacing-sm);
-}
-
-.step3-questions-options-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-xs);
-}
-
-.step3-questions-option-item {
-    display: flex;
-    align-items: flex-start;
-    gap: var(--spacing-sm);
-    padding: var(--spacing-xs) 0;
-}
-
-.step3-questions-option-letter {
-    font-weight: var(--font-weight-semibold);
-    color: var(--primary-color);
-    min-width: 20px;
-    flex-shrink: 0;
-}
-
-.step3-questions-option-text {
-    flex: 1;
-    color: var(--gray-700);
-    font-size: var(--font-size-sm);
-    line-height: var(--line-height-relaxed);
-}
-
-/* Different styling for True/False vs Multiple Choice */
-.step3-questions-item[data-type="True/False"] .step3-questions-item-options {
-    border-left-color: var(--blue-500);
-}
-
-.step3-questions-item[data-type="Multiple Choice"] .step3-questions-item-options {
-    border-left-color: var(--green-500);
-}
-
-/* Enhanced question item layout */
-.step3-questions-item {
-    display: flex;
-    flex-direction: column;
-    padding: var(--spacing-lg);
-    margin-bottom: var(--spacing-md);
-    background: var(--background-primary);
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius-md);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    transition: all var(--transition-normal);
-}
-
-.step3-questions-item:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.step3-questions-item-header {
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-bold);
-    color: var(--primary-color);
-    margin-bottom: var(--spacing-sm);
-}
-
-.step3-questions-item-text {
-    font-size: var(--font-size-base);
-    font-weight: var(--font-weight-medium);
-    color: var(--gray-800);
-    margin-bottom: var(--spacing-sm);
-    line-height: var(--line-height-relaxed);
-}
-
-.step3-questions-item-type {
-    font-size: var(--font-size-xs);
-    color: var(--gray-500);
-    font-style: italic;
-    margin-bottom: var(--spacing-sm);
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .step3-questions-item {
-        padding: var(--spacing-md);
-    }
-
-    .step3-questions-option-item {
-        flex-direction: column;
-        gap: var(--spacing-xs);
-        align-items: flex-start;
-    }
-
-    .step3-questions-option-letter {
-        min-width: auto;
+    .generating-state {
+        display: none;
     }
 }

@@ -49,37 +49,29 @@ step4-prompts {
     color: var(--gray-700);
     margin-bottom: var(--spacing-lg);
     line-height: var(--line-height-relaxed);
-    text-align: center;
 }
 
-/* Count Selection */
+/* Count Select */
 .step4-prompts-count-select {
     width: 100%;
-    max-width: 300px;
-    margin: 0 auto var(--spacing-lg);
+    max-width: 200px;
     padding: var(--spacing-md);
-    border: 2px solid var(--border-color);
-    border-radius: var(--border-radius-md);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
     font-size: var(--font-size-base);
-    font-weight: var(--font-weight-medium);
     background: var(--background-primary);
     color: var(--gray-700);
     cursor: pointer;
     transition: all var(--transition-normal);
-    display: block;
+    margin-bottom: var(--spacing-lg);
     box-sizing: border-box;
 }
 
 .step4-prompts-count-select:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
     transform: translateY(-1px);
-}
-
-.step4-prompts-count-select:hover {
-    border-color: var(--primary-color);
-    background: rgba(102, 126, 234, 0.02);
 }
 
 /* Actions */
@@ -87,6 +79,7 @@ step4-prompts {
     display: flex;
     gap: var(--spacing-md);
     justify-content: center;
+    align-items: center;
     flex-wrap: wrap;
 }
 
@@ -95,6 +88,71 @@ step4-prompts {
     padding-top: var(--spacing-lg);
     border-top: 1px solid var(--gray-200);
     flex-shrink: 0;
+}
+
+/* Generating state container - matches step1-topic.css pattern */
+.generating-state {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-md);
+    background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+    border-radius: var(--border-radius-md);
+    border: 2px solid var(--primary-light);
+    animation: pulse-border 2s infinite;
+    min-width: 300px;
+    gap: var(--spacing-md);
+}
+
+.generating-text {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    color: var(--gray-700);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    flex: 1;
+}
+
+.generating-text::before {
+    content: '⏳';
+    animation: spin 2s linear infinite;
+}
+
+/* Cancel button styling - matches step1-topic.css */
+.btn-cancel {
+    background: linear-gradient(135deg, var(--error-color), #dc2626);
+    color: white;
+    border: none;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border-radius: var(--border-radius-md);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    flex-shrink: 0;
+}
+
+.btn-cancel:hover {
+    background: linear-gradient(135deg, #dc2626, #b91c1c);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3);
+}
+
+.btn-cancel:active {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
+}
+
+/* Ensure generating state takes appropriate width */
+.step4-prompts-actions .generating-state {
+    flex: 1;
+    min-width: 300px;
+    max-width: 500px;
 }
 
 .step4-prompts-btn-generate {
@@ -131,6 +189,7 @@ step4-prompts {
     font-size: var(--font-size-lg);
 }
 
+/* Original Cancel Button (keeping for compatibility) */
 .step4-prompts-btn-cancel {
     background: linear-gradient(135deg, var(--warning-color), var(--warning-dark));
     color: white;
@@ -255,11 +314,12 @@ step4-prompts {
     overflow-y: auto;
 }
 
-/* No Content Message */
+/* No Prompts Message */
 .step4-prompts-no-message {
     text-align: center;
     color: var(--gray-500);
-    font-style: italic;
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-medium);
     padding: var(--spacing-2xl);
     background: var(--gray-50);
     border-radius: var(--border-radius);
@@ -389,6 +449,23 @@ step4-prompts {
     border-left-color: var(--gray-400);
 }
 
+/* Error Section */
+.step4-prompts-error-section {
+    text-align: center;
+    padding: var(--spacing-2xl);
+    background: var(--status-error-bg);
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--error-color);
+    margin-top: var(--spacing-xl);
+    flex-shrink: 0;
+}
+
+.step4-prompts-error-section p {
+    color: var(--status-error-color);
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--spacing-lg);
+}
+
 /* Loading State Specific Styling */
 .step4-prompts-root.loading {
     pointer-events: none;
@@ -408,6 +485,47 @@ step4-prompts {
     border-radius: var(--border-radius-full);
     animation: spin 1s linear infinite;
     z-index: var(--z-modal);
+}
+
+/* Animations */
+@keyframes pulse-border {
+    0%, 100% {
+        border-color: var(--primary-light);
+    }
+    50% {
+        border-color: var(--primary-color);
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 /* Responsive Design */
@@ -433,6 +551,24 @@ step4-prompts {
     .step4-prompts-actions--preview {
         flex-direction: column;
         align-items: stretch;
+    }
+
+    .generating-state {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+        text-align: center;
+        min-width: unset;
+        width: 100%;
+    }
+
+    .step4-prompts-actions .generating-state {
+        min-width: unset;
+        width: 100%;
+    }
+
+    .btn-cancel {
+        width: 100%;
+        justify-content: center;
     }
 
     .step4-prompts-btn-generate,
@@ -489,7 +625,8 @@ step4-prompts {
 .step4-prompts-btn-cancel:focus,
 .step4-prompts-btn-skip:focus,
 .step4-prompts-btn-regenerate:focus,
-.step4-prompts-btn-continue:focus {
+.step4-prompts-btn-continue:focus,
+.btn-cancel:focus {
     outline: 2px solid var(--primary-color);
     outline-offset: 2px;
 }
@@ -514,6 +651,10 @@ step4-prompts {
     .step4-prompts-no-message {
         border: 2px solid var(--gray-500);
     }
+
+    .generating-state {
+        border: 2px solid var(--primary-color);
+    }
 }
 
 /* Reduced motion support */
@@ -523,7 +664,8 @@ step4-prompts {
     .step4-prompts-item,
     .step4-prompts-count-select,
     .step4-prompts-status.loading::before,
-    .step4-prompts-root.loading::after {
+    .step4-prompts-root.loading::after,
+    .generating-text::before {
         animation: none;
         transition: none;
     }
@@ -532,7 +674,8 @@ step4-prompts {
     .step4-prompts-btn-cancel:hover,
     .step4-prompts-btn-skip:hover,
     .step4-prompts-btn-regenerate:hover,
-    .step4-prompts-btn-continue:hover {
+    .step4-prompts-btn-continue:hover,
+    .btn-cancel:hover {
         transform: none;
     }
 
@@ -575,6 +718,10 @@ step4-prompts {
     }
 
     .step4-prompts-item::before {
+        display: none;
+    }
+
+    .generating-state {
         display: none;
     }
 }

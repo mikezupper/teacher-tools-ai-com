@@ -1,5 +1,6 @@
 // api/generatePrompts.js
 import {extractStoryContent} from "./util.js";
+import {API_BASE_URL, API_TOKEN} from "../config.js";
 
 // Grade-level specific thinking prompt strategies
 const GRADE_LEVEL_PROMPT_STRATEGIES = {
@@ -168,11 +169,11 @@ No extra text, markdown, or commentary—just the JSON object.`;
     };
 
     console.log("generatePrompts llm prompt ", payload);
-    const res = await fetch('https://dream-gateway-us-west.livepeer.cloud/llm', {
+    const res = await fetch(`${API_BASE_URL}/llm`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ai-teachers-tool'
+            'Authorization': `Bearer ${API_TOKEN}`
         },
         body: JSON.stringify(payload),
         signal

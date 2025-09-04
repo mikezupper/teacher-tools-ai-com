@@ -15,22 +15,19 @@ export async function generateRandomStoryInput(options = {}) {
         signal = null
     } = options;
 
-    console.log('🎯 generateRandomStoryInput called - CREATIVE with GRADE CONSTRAINTS');
+    console.log('🎯 generateRandomStoryInput Start - Options:', options);
     console.log('🎯 Grade Level:', gradeLevel);
-    console.log('🎯 Signal received:', signal);
-    console.log('🎯 Signal aborted status:', signal?.aborted);
 
     try {
-        console.log('🎯 Calling LLM for creative generation with grade constraints...');
         const generatedParams = await chatJson(
             messagesForRandomStoryGeneration(gradeLevel, options),
             {
-                temperature: 0.9, // High creativity while maintaining educational focus
+                temperature: 0.9,
                 signal,
-                maxTokens: 4096
+                maxTokens: 8192
             }
         );
-        console.log('🎯 LLM generated creative params:', generatedParams);
+        console.log('🎯 LLM generated params:', generatedParams);
 
         // Minimal validation - only ensure essential structure
         const finalParams = {
@@ -38,19 +35,18 @@ export async function generateRandomStoryInput(options = {}) {
             gradeLevel: gradeLevel
         };
 
-        console.log('🎯 Returning creative params with grade constraints:', finalParams);
+        console.log('🎯 Returning params with grade constraints:', finalParams);
         return finalParams;
 
     } catch (error) {
-        console.log('🎯 Creative generation error:', error.name, error.message);
+        console.log('🎯 Generation error:', error.name, error.message);
 
         if (error.name === 'AbortError') {
             console.log('🎯 Re-throwing AbortError');
             throw error;
         }
 
-        // NO FALLBACKS - if LLM fails, the system fails
-        throw new Error(`Creative generation failed: ${error.message}. Pure LLM creativity required!`);
+        throw new Error(`Generation failed: ${error.message}.`);
     }
 }
 
@@ -66,13 +62,13 @@ function messagesForRandomStoryGeneration(gradeLevel, options) {
 
     const user = `Generate a completely ORIGINAL and CREATIVE story concept for ${gradeDisplay} students that follows educational research requirements.
 
-BE WILDLY CREATIVE while respecting ${gradeDisplay} developmental needs!
+BE GRADE APPROPRIATE and AGE APPROPRIATE while respecting ${gradeDisplay} developmental needs!
 
 CREATIVE FREEDOM - Invent something amazing:
-• Create a completely unique theme that kids have NEVER encountered before
-• Design an unexpected genre that would fascinate young readers
-• Choose a phonics skill that fits naturally into your creative concept
-• Set a story length that perfectly serves your unique idea
+• Create a theme that kids at this age / grade level always find fascinating.
+• Use a common genre that would fascinate young readers
+• Choose a phonics skill that fits naturally into your creative concept and iS GRADE-APPROPRIATE and skill appropriate
+• Set a story length that perfectly serves your unique idea and grade level / skill level
 
 EDUCATIONAL RESEARCH REQUIREMENTS for ${gradeDisplay}:
 • Sentence complexity: ${constraints.minWordsPerSentence}-${constraints.maxWordsPerSentence} words per sentence
@@ -91,26 +87,25 @@ CREATIVE INSPIRATION (but don't copy these - create something NEW):
 • What if everyday activities became extraordinary?
 
 PHONICS CREATIVITY:
-• Choose a phonics skill that would NATURALLY appear in your story concept
+• Choose a phonics skill that would NATURALLY appear in your story concept BUT IS RELATED TO GRADE LEVEL
 • Make it feel organic to the plot, not forced
-• Consider what sounds would fit your theme and characters
+• Consider what sounds would fit your theme and characters dont use something too advanced
 
 STORY LENGTH DECISION:
 • Pick the perfect length (4-15 sentences) for YOUR specific concept
 • Consider ${gradeDisplay} attention span and comprehension abilities
 • Make it long enough to be engaging, short enough to maintain focus
 
-YOUR TASK: Create something that would make both kids and teachers say "Wow, I've never read a story like this before!" while meeting all ${gradeDisplay} educational requirements.
+YOUR TASK: Create something that would make both kids and teachers say "Wow, I've love these types of stories!" while meeting all ${gradeDisplay} educational requirements.
 
 Return ONLY valid JSON in exactly this format:
 {
-  "theme": "Your completely original, creative theme that's never been done before",
-  "genre": "A unique genre that perfectly matches your creative theme",
+  "theme": "A theme that is grade level appropriate and captivates young readers",
+  "genre": "A  genre that perfectly matches your creative theme",
   "phonicSkill": "A specific phonics skill that naturally fits your story concept",
   "length": [number between 4-15 that serves your story perfectly]
 }
-
-Remember: Be MAXIMALLY CREATIVE within educational boundaries. Surprise everyone!`;
+Make sure the phonics skill is appropriate for ${gradeDisplay} and fits your story concept organically.`;
 
     return [
         { role: "system", content: sys },

@@ -19,7 +19,8 @@ class Step3Questions extends LitElement {
         showPreview:   { type: Boolean, state: true },
         isGenerating:  { type: Boolean, state: true },
         isInitialized: { type: Boolean, state: true },
-        questionTypes: { type: Array,  state: true }
+        questionTypes: { type: Array,  state: true },
+        currentAction:  { type: String, state: true }
     };
 
     constructor() {
@@ -34,6 +35,7 @@ class Step3Questions extends LitElement {
         this.operation = null;
         this.questionTypes = [];
         this.loadingToastId = null;
+        this.currentAction = null;
     }
 
     createRenderRoot() {
@@ -143,17 +145,21 @@ class Step3Questions extends LitElement {
     }
 
 
-    async handleGenerate() {
-        if (this.isGenerating) {
-            this.operation?.cancel();
-            this.isGenerating = false;
-            // Hide loading toast if canceling
-            if (this.loadingToastId) {
-                toast.hide(this.loadingToastId);
-                this.loadingToastId = null;
-            }
-            return;
+    handleCancel() {
+        console.log('❓ handleCancel called');
+        console.log('❓ Current operation:', this.operation);
+        console.log('❓ isGenerating:', this.isGenerating);
+
+        if (this.operation) {
+            console.log('❓ Calling operation.cancel()');
+            this.operation.cancel();
+            console.log('❓ operation.cancel() completed');
+        } else {
+            console.log('❓ No operation to cancel');
         }
+    }
+
+    async handleGenerate() {
         if (!this.validateStoryData()) return;
         if (this.selectedCount === 0) {
             await this.handleSkip();
@@ -163,38 +169,47 @@ class Step3Questions extends LitElement {
     }
 
     async handleRegenerate() {
-        if (this.isGenerating) {
-            this.operation?.cancel();
-            this.isGenerating = false;
-            // Hide loading toast if canceling
-            if (this.loadingToastId) {
-                toast.hide(this.loadingToastId);
-                this.loadingToastId = null;
-            }
-            return;
-        }
         if (!this.validateStoryData()) return;
         await this.performGeneration();
     }
 
     async performGeneration() {
-        const types = this.questionTypes.map(qt =>qt.type);
+        const types = this.questionTypes.map(qt => qt.type);
 
         this.operation = createAbortableOperation();
+        this.currentAction = 'Preparing question generation...';
         this.isGenerating = true;
         this.loadingToastId = toast.loading('Generating questions…');
 
         try {
+            // Update status during generation
+            this.currentAction = '❓ Creating comprehension questions...';
+            this.requestUpdate();
+
             const storyWithTypes = {
                 ...this.story,
                 questionTypes: types
             };
 
-            const questions = await this.operation.execute(
-                generateQuestions,
-                storyWithTypes,
-                this.selectedCount
-            );
+            const questions = await this.operation.execute((signal) => {
+                // Update status for different question types
+                if (types.includes('Multiple Choice')) {
+                    this.currentAction = '📝 Generating multiple choice questions...';
+                    this.requestUpdate();
+                } else if (types.includes('True/False')) {
+                    this.currentAction = '✅ Creating true/false questions...';
+                    this.requestUpdate();
+                } else {
+                    this.currentAction = '💭 Crafting open-ended questions...';
+                    this.requestUpdate();
+                }
+
+                return generateQuestions(storyWithTypes, this.selectedCount, signal);
+            });
+
+            this.currentAction = '💾 Saving generated questions...';
+            this.requestUpdate();
+
             this.questions = questions;
             await saveQuestions(this.storyId, questions);
             this.showPreview = true;
@@ -205,6 +220,7 @@ class Step3Questions extends LitElement {
                 this.loadingToastId = null;
             }
             toast.success('Questions generated successfully!');
+
         } catch (err) {
             // Hide loading toast
             if (this.loadingToastId) {
@@ -213,13 +229,16 @@ class Step3Questions extends LitElement {
             }
 
             if (err.name === 'AbortError') {
-                toast.info('Generation cancelled.');
+                toast.info('Question generation cancelled.');
+                this.currentAction = 'Question generation cancelled';
             } else {
                 console.error(err);
                 toast.error('Error generating questions. Try again.');
+                this.currentAction = 'Question generation failed';
             }
         } finally {
             this.isGenerating = false;
+            this.currentAction = null;
             this.operation = null;
         }
     }
@@ -340,11 +359,9 @@ class Step3Questions extends LitElement {
     renderInputSection() {
         if (!this.showInput) return '';
         return html`
-            <div
-                class="step3-questions-input-section"
-                title="Configure how many and which types of questions to generate"
-                aria-label="Question options"
-            >
+            <div class="step3-questions-input-section" 
+                 title="Configure how many and which types of questions to generate"
+                 aria-label="Question options">
                 <p title="Choose number of questions">How many questions would you like to generate?</p>
                 <div class="step3-questions-count-options">
                     ${[0,1,2,3].map(count => html`
@@ -370,31 +387,38 @@ class Step3Questions extends LitElement {
                 ${this.selectedCount > 0 ? this.renderQuestionTypes() : ''}
 
                 <div class="step3-questions-actions" aria-label="Actions">
-                    <button
-                        class="step3-questions-btn-generate"
-                        @click=${this.handleGenerate}
-                        ?disabled=${this.isGenerating}
-                        title="Generate questions"
-                    >
-                        ${this.isGenerating ? 'Generating…' : 'Generate Questions'}
-                    </button>
                     ${this.isGenerating ? html`
+                        <!-- Show status and cancel when generating -->
+                        <div class="generating-state">
+                            <span class="generating-text">
+                                ${this.currentAction || 'Processing...'}
+                            </span>
+                            <button
+                                type="button"
+                                class="btn-cancel"
+                                @click=${this.handleCancel}
+                                title="Cancel question generation"
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    ` : html`
+                        <!-- Show normal buttons when not generating -->
                         <button
-                            class="step3-questions-btn-cancel"
+                            class="step3-questions-btn-generate"
                             @click=${this.handleGenerate}
-                            title="Cancel generation"
+                            title="Generate questions"
                         >
-                            Cancel
+                            Generate Questions
                         </button>
-                    ` : ''}
-                    <button
-                        class="step3-questions-btn-skip"
-                        @click=${this.handleSkip}
-                        ?disabled=${this.isGenerating}
-                        title="Skip questions and continue"
-                    >
-                        Skip Questions
-                    </button>
+                        <button
+                            class="step3-questions-btn-skip"
+                            @click=${this.handleSkip}
+                            title="Skip questions and continue"
+                        >
+                            Skip Questions
+                        </button>
+                    `}
                 </div>
             </div>
         `;
@@ -431,11 +455,9 @@ class Step3Questions extends LitElement {
 
     renderPreviewSection() {
         return html`
-            <div
-                    class="step3-questions-preview-section"
-                    title="Preview of generated questions"
-                    aria-label="Questions preview"
-            >
+            <div class="step3-questions-preview-section"
+                 title="Preview of generated questions"
+                 aria-label="Questions preview">
                 <ul class="step3-questions-list">
                     ${this.questions.map((q, i) => html`
                         <li class="step3-questions-item" title="${q.text}">
@@ -444,54 +466,70 @@ class Step3Questions extends LitElement {
                             <div class="step3-questions-item-type">(${q.type})</div>
 
                             ${q.type === 'Multiple Choice' && q.options && q.options.length > 0 ? html`
-                            <div class="step3-questions-item-options">
-                                <div class="step3-questions-options-label">Answer Choices:</div>
-                                <ul class="step3-questions-options-list">
-                                    ${q.options.map((option, optIndex) => html`
-                                        <li class="step3-questions-option-item">
-                                            <span class="step3-questions-option-letter">${String.fromCharCode(65 + optIndex)}.</span>
-                                            <span class="step3-questions-option-text">${option}</span>
-                                        </li>
-                                    `)}
-                                </ul>
-                            </div>
-                        ` : ''}
+                                <div class="step3-questions-item-options">
+                                    <div class="step3-questions-options-label">Answer Choices:</div>
+                                    <ul class="step3-questions-options-list">
+                                        ${q.options.map((option, optIndex) => html`
+                                            <li class="step3-questions-option-item">
+                                                <span class="step3-questions-option-letter">${String.fromCharCode(65 + optIndex)}.</span>
+                                                <span class="step3-questions-option-text">${option}</span>
+                                            </li>
+                                        `)}
+                                    </ul>
+                                </div>
+                            ` : ''}
 
                             ${q.type === 'True/False' ? html`
-                            <div class="step3-questions-item-options">
-                                <div class="step3-questions-options-label">Answer Choices:</div>
-                                <ul class="step3-questions-options-list">
-                                    <li class="step3-questions-option-item">
-                                        <span class="step3-questions-option-letter">A.</span>
-                                        <span class="step3-questions-option-text">True</span>
-                                    </li>
-                                    <li class="step3-questions-option-item">
-                                        <span class="step3-questions-option-letter">B.</span>
-                                        <span class="step3-questions-option-text">False</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        ` : ''}
+                                <div class="step3-questions-item-options">
+                                    <div class="step3-questions-options-label">Answer Choices:</div>
+                                    <ul class="step3-questions-options-list">
+                                        <li class="step3-questions-option-item">
+                                            <span class="step3-questions-option-letter">A.</span>
+                                            <span class="step3-questions-option-text">True</span>
+                                        </li>
+                                        <li class="step3-questions-option-item">
+                                            <span class="step3-questions-option-letter">B.</span>
+                                            <span class="step3-questions-option-text">False</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            ` : ''}
                         </li>
                     `)}
                 </ul>
                 <div class="step3-questions-actions" aria-label="Preview actions">
-                    <button
+                    ${this.isGenerating ? html`
+                        <!-- Show status and cancel when regenerating -->
+                        <div class="generating-state">
+                            <span class="generating-text">
+                                ${this.currentAction || 'Processing...'}
+                            </span>
+                            <button
+                                type="button"
+                                class="btn-cancel"
+                                @click=${this.handleCancel}
+                                title="Cancel question regeneration"
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    ` : html`
+                        <!-- Show normal buttons when not generating -->
+                        <button
                             class="step3-questions-btn-regenerate"
                             @click=${this.handleRegenerate}
-                            ?disabled=${this.isGenerating}
                             title="Regenerate questions"
-                    >
-                        ${this.isGenerating ? 'Generating…' : 'Regenerate Questions'}
-                    </button>
-                    <button
+                        >
+                            Regenerate Questions
+                        </button>
+                        <button
                             class="step3-questions-btn-continue"
                             @click=${this.handleContinue}
-                            ?disabled=${this.isGenerating}
                             title="Continue with these questions"
-                    >
-                        Continue with These Questions
-                    </button>
+                        >
+                            Continue with These Questions
+                        </button>
+                    `}
                 </div>
             </div>
         `;

@@ -1,5 +1,7 @@
 // api/generateImage.js
 
+import {API_BASE_URL, API_TOKEN} from "../config.js";
+
 /**
  * Turn a story paragraph into a concise, vivid image-generation prompt.
  * @param {string} storyText
@@ -25,7 +27,7 @@ export async function generateImagePrompt(storyText) {
             ]
         };
 
-        const res = await fetch('https://dream-gateway-us-west.livepeer.cloud/llm', {
+        const res = await fetch(`${API_BASE_URL}/llm`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -84,12 +86,12 @@ export async function generateImage(storyText, imageCount = 1) {
 
         // 3) Fire the request
         const res = await fetch(
-            'https://dream-gateway-us-west.livepeer.cloud/text-to-image',
+            `${API_BASE_URL}/text-to-image`,
             {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ai-teachers-tool'
+                    'Authorization': `Bearer ${API_TOKEN}`
                 },
                 body: JSON.stringify(payload)
             }

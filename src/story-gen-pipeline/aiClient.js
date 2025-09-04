@@ -2,15 +2,8 @@
 
 import { safeJsonParse } from "./utils/json.js";
 import { fetchWithRetry } from "./utils/retry.js";
+import {API_BASE_URL, API_MODEL, API_TOKEN} from "../config.js";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-const API_MODEL = import.meta.env.VITE_API_MODEL;
-const API_TOKEN = import.meta.env.VITE_API_TOKEN;
-
-console.log("AI Client Config:");
-console.log(" - API_BASE_URL:", API_BASE_URL ? "(set)" : "(not set)");
-console.log(" - API_MODEL:", API_MODEL);
-console.log(" - API_TOKEN:", API_TOKEN ? "(set)" : "(not set)");
 export async function chatJson(messages, opts = {}) {
     // const payload = {
     //     model: 'meta-llama/Meta-Llama-3.1-8B-Instruct',
@@ -35,7 +28,7 @@ export async function chatJson(messages, opts = {}) {
 
     // console.log("[aiClient::chatJson] Request Body:", JSON.stringify(body));
 
-    const res = await fetchWithRetry(API_BASE_URL, {
+    const res = await fetchWithRetry(`${API_BASE_URL}/llm`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

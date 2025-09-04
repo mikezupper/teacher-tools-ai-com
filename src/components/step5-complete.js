@@ -56,10 +56,6 @@ class Step5Complete extends LitElement {
                         this.isLoading = false;
                         this.hasError = false;
                         this.isInitialized = true;
-
-                        // Show success toast when story loads
-                        toast.success('🎉 Story creation complete! Your educational story is ready.');
-
                         this.requestUpdate();
                     },
                     error: err => {
@@ -101,7 +97,7 @@ class Step5Complete extends LitElement {
             // Slight delay to let user see the success message
             setTimeout(() => {
                 window.location.href = '/dashboard.html';
-            }, 1500);
+            }, 500);
         } catch (error) {
             console.error('Error marking story complete:', error);
             toast.hide(savingToastId);
@@ -110,7 +106,7 @@ class Step5Complete extends LitElement {
             // Still redirect even if there's an error
             setTimeout(() => {
                 window.location.href = '/dashboard.html';
-            }, 2000);
+            }, 500);
         }
     }
 

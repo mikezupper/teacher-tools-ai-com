@@ -1,14 +1,15 @@
-// api/generateStory.js - Updated to support AbortController
+// api/generateStory.js - Updated to support UIStatusAdapter
 import { runPipeline } from "../story-gen-pipeline/index.js";
-import {extractStoryContent} from "./util.js";
+import { extractStoryContent } from "./util.js";
 
 /**
  * Generate educational story using the robust pipeline
  * @param {Object} storyData - Form data from UI
  * @param {AbortSignal} signal - AbortController signal for cancellation
+ * @param {Object} statusAdapter - Optional status adapter (UIStatusAdapter)
  * @returns {Object} - Pipeline story result adapted for UI
  */
-export const generateStory = async (storyData, signal) => {
+export const generateStory = async (storyData, signal, statusAdapter = null) => {
     console.log('Generating story with pipeline approach:', storyData);
 
     // Map form parameters to pipeline input format
@@ -20,7 +21,7 @@ export const generateStory = async (storyData, signal) => {
         gradeLevel: storyData.gradeLevel
     };
 
-    // Pipeline options for educational quality - INCLUDE SIGNAL
+    // Pipeline options for educational quality
     const options = {
         qualityThreshold: 0.75,
         maxRevisionCycles: 2,
@@ -28,6 +29,11 @@ export const generateStory = async (storyData, signal) => {
         educationalFocus: true,
         signal // Pass the abort signal to the pipeline
     };
+
+    // Add status adapter as analytics if provided
+    if (statusAdapter) {
+        options.analytics = statusAdapter;
+    }
 
     try {
         // Use the robust pipeline to generate story

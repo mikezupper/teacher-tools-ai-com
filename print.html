@@ -1,10 +1,10 @@
+<!-- Updated print.html with fixed pagination styles -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8"/>
-    <title>Printable Story Worksheet</title>
+    <title>AI Teacher Tools: Story Generator - Printable Worksheet</title>
     <link rel="stylesheet" href="/src/styles/main.css"/>
-    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=%VITE_GOOGLE_TAG_ID%"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -14,13 +14,25 @@
         gtag('config', '%VITE_GOOGLE_TAG_ID%');
     </script>
     <style>
-        /* Print-specific styles for enhanced layout */
+        /* FIXED: Print-specific styles for multi-page support */
+        html, body {
+            height: auto !important;
+            min-height: auto !important;
+            max-height: none !important;
+            overflow: visible !important;
+        }
+
         .container {
             max-width: 100%;
             margin: 0;
             padding: 20px;
             font-family: 'Times New Roman', serif;
             line-height: 1.6;
+            /* FIXED: Remove height constraints */
+            height: auto !important;
+            min-height: auto !important;
+            max-height: none !important;
+            overflow: visible !important;
         }
 
         .storyApp__printTitle {
@@ -29,11 +41,16 @@
             font-size: 24pt;
             font-weight: bold;
             color: #333;
+            page-break-after: avoid; /* Keep title with content */
         }
 
         .storyApp__printSection {
             margin-bottom: 30px;
-            page-break-inside: avoid;
+            /* FIXED: Allow sections to break across pages when needed */
+            page-break-inside: auto;
+            /* FIXED: Keep section headers with some content */
+            orphans: 2;
+            widows: 2;
         }
 
         .storyApp__printSection h2 {
@@ -42,6 +59,9 @@
             color: #333;
             border-bottom: 2px solid #333;
             padding-bottom: 5px;
+            /* FIXED: Keep headers with content */
+            page-break-after: avoid;
+            page-break-inside: avoid;
         }
 
         /* Two-column layout for story and image */
@@ -49,11 +69,14 @@
             display: flex;
             gap: 20px;
             align-items: flex-start;
+            /* FIXED: Allow breaking if content is long */
+            page-break-inside: auto;
         }
 
         .storyApp__printImageContainer {
             flex: 0 0 300px;
             text-align: center;
+            page-break-inside: avoid; /* Keep image intact */
         }
 
         .storyApp__printImage {
@@ -61,28 +84,38 @@
             height: auto;
             border: 2px solid #ddd;
             border-radius: 8px;
+            page-break-inside: avoid;
+            page-break-after: avoid;
         }
 
         .storyApp__printStoryContent {
             flex: 1;
             min-width: 0;
+            /* FIXED: Allow story content to flow across pages */
+            page-break-inside: auto;
         }
 
         .storyApp__printStory {
             font-size: 14pt;
             line-height: 1.8;
             color: #333;
+            /* FIXED: Allow story text to break across pages */
+            page-break-inside: auto;
         }
 
         .storyApp__printStory p {
             margin-bottom: 15px;
             text-align: justify;
+            /* FIXED: Proper paragraph breaking */
+            orphans: 2;
+            widows: 2;
+            page-break-inside: avoid;
         }
 
         /* Question formatting */
         .question-item {
             margin-bottom: 25px;
-            page-break-inside: avoid;
+            page-break-inside: avoid; /* Keep individual questions together */
         }
 
         .question-header {
@@ -90,6 +123,7 @@
             font-size: 14pt;
             margin-bottom: 8px;
             color: #333;
+            page-break-after: avoid; /* Keep question header with content */
         }
 
         .question-type {
@@ -102,6 +136,7 @@
         /* Multiple choice options */
         .question-options {
             margin: 10px 0 15px 20px;
+            page-break-inside: avoid; /* Keep all options with question */
         }
 
         .question-option {
@@ -118,6 +153,7 @@
         /* Answer lines for open-ended questions */
         .answer-lines {
             margin: 15px 0 10px 20px;
+            page-break-inside: avoid; /* Keep answer lines together */
         }
 
         .answer-line {
@@ -131,7 +167,7 @@
         .prompt-item {
             margin-bottom: 20px;
             font-size: 13pt;
-            page-break-inside: avoid;
+            page-break-inside: avoid; /* Keep individual prompts together */
         }
 
         .prompt-item strong {
@@ -139,10 +175,52 @@
             margin-right: 8px;
         }
 
+        /* FIXED: Content containers to allow natural flow */
+        .storyApp__printPrompts,
+        .storyApp__printQuestions {
+            /* FIXED: Allow question/prompt containers to break across pages */
+            page-break-inside: auto;
+            height: auto !important;
+            min-height: auto !important;
+            max-height: none !important;
+            overflow: visible !important;
+        }
+
+        /* FIXED: Page break controls for major sections */
+        .storyApp__printSection:nth-child(1) {
+            /* First section (prompts) */
+            page-break-before: auto;
+        }
+
+        .storyApp__printSection:nth-child(2) {
+            /* Second section (story) */
+            page-break-before: auto;
+        }
+
+        .storyApp__printSection:nth-child(3) {
+            /* Third section (questions) */
+            page-break-before: auto;
+        }
+
         /* Print media query */
         @media print {
+            /* FIXED: Remove all height constraints in print */
+            * {
+                max-height: none !important;
+                min-height: auto !important;
+            }
+
+            html, body {
+                height: auto !important;
+                overflow: visible !important;
+            }
+
             .container {
                 padding: 15px;
+                height: auto !important;
+                min-height: auto !important;
+                max-height: none !important;
+                overflow: visible !important;
             }
 
             .storyApp__printTitle {
@@ -152,18 +230,42 @@
 
             .storyApp__printSection h2 {
                 font-size: 16pt;
+                page-break-after: avoid;
             }
 
             .storyApp__printStory {
                 font-size: 12pt;
+                page-break-inside: auto;
             }
 
             .question-header {
                 font-size: 12pt;
+                page-break-after: avoid;
             }
 
             .answer-line {
                 height: 20px;
+            }
+
+            /* FIXED: Ensure content containers can flow */
+            .storyApp__printPrompts,
+            .storyApp__printQuestions,
+            .storyApp__printStoryContent {
+                height: auto !important;
+                min-height: auto !important;
+                max-height: none !important;
+                overflow: visible !important;
+            }
+
+            /* FIXED: Allow sections to break if very long */
+            .storyApp__printSection {
+                page-break-inside: auto;
+            }
+
+            /* FIXED: But keep smaller items together */
+            .question-item,
+            .prompt-item {
+                page-break-inside: avoid;
             }
         }
 
@@ -213,153 +315,180 @@
     const storyIdParam = params.get('storyId');
     const storyId = storyIdParam ? parseInt(storyIdParam, 10) : null;
 
-    // DOM elements
-    const titleEl = document.querySelector('.storyApp__printTitle');
-    const storyEl = document.querySelector('.storyApp__printStory');
-    const imageEl = document.querySelector('.storyApp__printImage');
-    const imageContainer = document.querySelector('.storyApp__printImageContainer');
-    const twoColumnContainer = document.querySelector('.storyApp__printTwoColumn');
-    const promptsEl = document.querySelector('.storyApp__printPrompts');
-    const questionsEl = document.querySelector('.storyApp__printQuestions');
-
-    function createAnswerLines() {
-        return `
-            <div class="answer-lines">
-                <div class="answer-line"></div>
-                <div class="answer-line"></div>
-                <div class="answer-line"></div>
-                <div class="answer-line"></div>
-            </div>
-        `;
+    if (!storyId) {
+        document.querySelector('.storyApp__printTitle').textContent = 'Error: No Story ID Provided';
+        throw new Error('No storyId parameter found in URL');
     }
 
-    function formatQuestion(question, index) {
-        const questionText = question.questionText || question.text || question;
-        const questionType = question.type || 'Open-ended';
+    // Load and display story data
+    getFullStory$(storyId).subscribe({
+        next: (story) => {
+            if (!story) {
+                document.querySelector('.storyApp__printTitle').textContent = 'Error: Story Not Found';
+                return;
+            }
 
-        let optionsHtml = '';
-        let answerLinesHtml = '';
+            populatePrintPage(story);
+        },
+        error: (err) => {
+            console.error('Error loading story:', err);
+            document.querySelector('.storyApp__printTitle').textContent = 'Error Loading Story';
+        }
+    });
 
-        if (questionType === 'Multiple Choice' && question.options && question.options.length > 0) {
-            optionsHtml = `
-                <div class="question-options">
-                    ${question.options.map((option, optIndex) =>
-                `<div class="question-option">
-                            <span class="option-letter">${String.fromCharCode(65 + optIndex)}.</span>
-                            ${option}
-                        </div>`
-            ).join('')}
-                </div>
-            `;
-        } else if (questionType === 'True/False') {
-            optionsHtml = `
-                <div class="question-options">
-                    <div class="question-option">
-                        <span class="option-letter">A.</span>
-                        True
+    function populatePrintPage(story) {
+        // Set title
+        document.querySelector('.storyApp__printTitle').textContent = story.title || 'Untitled Story';
+
+        // Populate prompts
+        const promptsContainer = document.querySelector('.storyApp__printPrompts');
+        if (story.prompts && story.prompts.length > 0) {
+            promptsContainer.innerHTML = story.prompts
+                .map((prompt, index) => `
+                    <div class="prompt-item">
+                        <strong>Prompt ${index + 1}:</strong> ${prompt.promptText || prompt}
                     </div>
-                    <div class="question-option">
-                        <span class="option-letter">B.</span>
-                        False
-                    </div>
-                </div>
-            `;
-        } else if (questionType === 'Open-ended' || questionType === 'Custom' || !questionType) {
-            // Add 4 lines for open-ended questions
-            answerLinesHtml = createAnswerLines();
+                `).join('');
+        } else {
+            promptsContainer.innerHTML = '<div class="prompt-item"><em>No thinking prompts provided.</em></div>';
         }
 
-        return `
-            <div class="question-item">
-                <div class="question-header">
-                    ${index + 1}. ${questionText}
-                    <span class="question-type">(${questionType})</span>
-                </div>
-                ${optionsHtml}
-                ${answerLinesHtml}
-            </div>
-        `;
-    }
+        // Populate story content - Fix for "undefined undefined undefined"
+        const storyContainer = document.querySelector('.storyApp__printStory');
+        let storyContent = '';
 
-    (async () => {
-        if (!storyId) {
-            console.error('No storyId provided in URL');
-            titleEl.textContent = 'Error: No story selected';
-            return;
+        // Try structured format first
+        if (story.paragraphs && Array.isArray(story.paragraphs) && story.paragraphs.length > 0) {
+            storyContent = story.paragraphs
+                .map(paragraph => {
+                    if (paragraph.sentences && Array.isArray(paragraph.sentences)) {
+                        // Handle structured sentences
+                        const sentences = paragraph.sentences.map(sentenceObj => {
+                            if (typeof sentenceObj === 'string') {
+                                return sentenceObj;
+                            } else if (sentenceObj && sentenceObj.sentence) {
+                                return sentenceObj.sentence;
+                            }
+                            return ''; // Skip invalid sentences
+                        }).filter(sentence => sentence && sentence.trim());
+
+                        return sentences.join(' ');
+                    } else if (typeof paragraph === 'string') {
+                        // Handle paragraph as direct string
+                        return paragraph;
+                    } else if (paragraph.text) {
+                        // Handle paragraph.text format
+                        return paragraph.text;
+                    }
+                    return ''; // Skip invalid paragraphs
+                })
+                .filter(paragraph => paragraph && paragraph.trim())
+                .map(paragraph => `<p>${paragraph}</p>`)
+                .join('');
         }
 
-        // Load the specific story from the DB
-        const storySub = getFullStory$(storyId)
-            .subscribe({
-                next: async story => {
-                    if (!story) {
-                        console.error(`Story with id ${storyId} not found`);
-                        titleEl.textContent = 'Error: Story not found';
-                        return;
-                    }
-
-                    if(story.imageBlob){
-                        story.imageUrl = URL.createObjectURL(story.imageBlob);
-                    }
-
-                    console.log('Loaded story:', story);
-
-                    // Populate DOM elements
-                    titleEl.textContent = story.title || 'Untitled Story';
-
-                    // Extract and display story content
-                    const storyText = extractStoryContent(story);
-                    const formattedStory = storyText.split('\n\n').map(paragraph =>
-                        `<p>${paragraph.trim()}</p>`
-                    ).join('');
-
-                    storyEl.innerHTML = formattedStory || '<p>No story content available.</p>';
-
-                    // Handle image and layout
-                    if (story.imageUrl) {
-                        imageEl.src = story.imageUrl;
-                        imageEl.style.display = 'block';
-                        imageContainer.classList.remove('hidden');
-                        twoColumnContainer.classList.remove('no-image');
-                    } else {
-                        imageEl.style.display = 'none';
-                        imageContainer.classList.add('hidden');
-                        twoColumnContainer.classList.add('no-image');
-                    }
-
-                    // Handle prompts
-                    if (story.prompts && story.prompts.length > 0) {
-                        const promptsList = story.prompts.map((prompt, index) =>
-                            `<div class="prompt-item">
-                                <strong>${index + 1}.</strong> ${prompt.promptText || prompt}
-                            </div>`
-                        ).join('');
-                        promptsEl.innerHTML = promptsList;
-                    } else {
-                        promptsEl.innerHTML = '<p>No thinking prompts available.</p>';
-                    }
-
-                    // Handle questions with enhanced formatting
-                    if (story.questions && story.questions.length > 0) {
-                        const questionsList = story.questions.map((question, index) =>
-                            formatQuestion(question, index)
-                        ).join('');
-                        questionsEl.innerHTML = questionsList;
-                    } else {
-                        questionsEl.innerHTML = '<p>No comprehension questions available.</p>';
-                    }
-
-                    // Auto-print after content loads
-                    setTimeout(() => {
-                        window.print();
-                    }, 1000);
-                },
-                error: err => {
-                    console.error('Error loading story:', err);
-                    titleEl.textContent = 'Error loading story';
+        // Try extractStoryContent utility if structured format didn't work
+        if (!storyContent && (story.paragraphs || story.content)) {
+            try {
+                const extractedContent = extractStoryContent(story);
+                if (extractedContent && extractedContent.trim()) {
+                    storyContent = extractedContent.split('\n\n')
+                        .filter(paragraph => paragraph && paragraph.trim())
+                        .map(paragraph => `<p>${paragraph.trim()}</p>`)
+                        .join('');
                 }
-            });
-    })();
+            } catch (error) {
+                console.error('Error extracting story content:', error);
+            }
+        }
+
+        // Fallback to legacy content field
+        if (!storyContent && story.content) {
+            if (typeof story.content === 'string') {
+                storyContent = story.content.split('\n\n')
+                    .filter(paragraph => paragraph && paragraph.trim())
+                    .map(paragraph => `<p>${paragraph.trim()}</p>`)
+                    .join('');
+            }
+        }
+
+        // Final fallback to story field
+        if (!storyContent && story.story) {
+            if (typeof story.story === 'string') {
+                storyContent = story.story.split('\n\n')
+                    .filter(paragraph => paragraph && paragraph.trim())
+                    .map(paragraph => `<p>${paragraph.trim()}</p>`)
+                    .join('');
+            }
+        }
+
+        storyContainer.innerHTML = storyContent || '<p><em>No story content available.</em></p>';
+
+        console.log('Final story content:', storyContent); // Debug log
+
+        // Handle image
+        const imageContainer = document.querySelector('.storyApp__printImageContainer');
+        const imageElement = document.querySelector('.storyApp__printImage');
+        const twoColumnContainer = document.querySelector('.storyApp__printTwoColumn');
+
+        if (story.imageBlob) {
+            const imageUrl = URL.createObjectURL(story.imageBlob);
+            imageElement.src = imageUrl;
+            imageElement.style.display = 'block';
+            imageContainer.classList.remove('hidden');
+        } else {
+            imageContainer.classList.add('hidden');
+            twoColumnContainer.classList.add('no-image');
+        }
+
+        // Populate questions
+        const questionsContainer = document.querySelector('.storyApp__printQuestions');
+        if (story.questions && story.questions.length > 0) {
+            questionsContainer.innerHTML = story.questions
+                .map((question, index) => {
+                    const questionText = question.questionText || question.text || question;
+                    let html = `
+                        <div class="question-item">
+                            <div class="question-header">
+                                Question ${index + 1}
+                                <span class="question-type">(${question.type || 'Open-ended'})</span>
+                            </div>
+                            <div>${questionText}</div>
+                    `;
+
+                    if (question.type === 'Multiple Choice' && question.options) {
+                        html += '<div class="question-options">';
+                        question.options.forEach((option, optIndex) => {
+                            const letter = String.fromCharCode(65 + optIndex);
+                            html += `<div class="question-option"><span class="option-letter">${letter}.</span> ${option}</div>`;
+                        });
+                        html += '</div>';
+                    } else if (question.type === 'True/False') {
+                        html += `
+                            <div class="question-options">
+                                <div class="question-option"><span class="option-letter">A.</span> True</div>
+                                <div class="question-option"><span class="option-letter">B.</span> False</div>
+                            </div>
+                        `;
+                    } else {
+                        // Open-ended question - add answer lines
+                        html += `
+                            <div class="answer-lines">
+                                <div class="answer-line"></div>
+                                <div class="answer-line"></div>
+                                <div class="answer-line"></div>
+                                <div class="answer-line"></div>
+                            </div>
+                        `;
+                    }
+
+                    html += '</div>';
+                    return html;
+                }).join('');
+        } else {
+            questionsContainer.innerHTML = '<div class="question-item"><em>No comprehension questions provided.</em></div>';
+        }
+    }
 </script>
 </body>
 </html>

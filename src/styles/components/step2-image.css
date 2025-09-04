@@ -58,6 +58,71 @@ step2-image {
     margin-top: var(--spacing-lg);
 }
 
+/* Generating state container - matches step1-topic.css pattern */
+.generating-state {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-md);
+    background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+    border-radius: var(--border-radius-md);
+    border: 2px solid var(--primary-light);
+    animation: pulse-border 2s infinite;
+    min-width: 300px;
+    gap: var(--spacing-md);
+}
+
+.generating-text {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    color: var(--gray-700);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    flex: 1;
+}
+
+.generating-text::before {
+    content: '⏳';
+    animation: spin 2s linear infinite;
+}
+
+/* Cancel button styling - matches step1-topic.css */
+.btn-cancel {
+    background: linear-gradient(135deg, var(--error-color), #dc2626);
+    color: white;
+    border: none;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border-radius: var(--border-radius-md);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    flex-shrink: 0;
+}
+
+.btn-cancel:hover {
+    background: linear-gradient(135deg, #dc2626, #b91c1c);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3);
+}
+
+.btn-cancel:active {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
+}
+
+/* Ensure generating state takes appropriate width */
+.step2-image-actions .generating-state {
+    flex: 1;
+    min-width: 300px;
+    max-width: 500px;
+}
+
 /* Generate Button */
 .step2-image-btn-generate {
     background: var(--primary-gradient);
@@ -93,7 +158,7 @@ step2-image {
     font-size: var(--font-size-lg);
 }
 
-/* Cancel Button */
+/* Original Cancel Button (keeping for compatibility) */
 .step2-image-btn-cancel {
     background: linear-gradient(135deg, var(--warning-color), var(--warning-dark));
     color: white;
@@ -387,6 +452,56 @@ step2-image {
     line-height: var(--line-height-relaxed);
 }
 
+/* Animations */
+@keyframes pulse-border {
+    0%, 100% {
+        border-color: var(--primary-light);
+    }
+    50% {
+        border-color: var(--primary-color);
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .step2-image-root {
@@ -401,6 +516,24 @@ step2-image {
         flex-direction: column;
         align-items: stretch;
         gap: var(--spacing-sm);
+    }
+
+    .generating-state {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+        text-align: center;
+        min-width: unset;
+        width: 100%;
+    }
+
+    .step2-image-actions .generating-state {
+        min-width: unset;
+        width: 100%;
+    }
+
+    .btn-cancel {
+        width: 100%;
+        justify-content: center;
     }
 
     .step2-image-btn-generate,
@@ -467,7 +600,8 @@ step2-image {
 .step2-image-btn-skip:focus,
 .step2-image-btn-regenerate:focus,
 .step2-image-btn-continue:focus,
-.step2-image-error-btn:focus {
+.step2-image-error-btn:focus,
+.btn-cancel:focus {
     outline: 2px solid var(--primary-color);
     outline-offset: 2px;
 }
@@ -487,6 +621,10 @@ step2-image {
     .step2-image-img-loading {
         border: 2px solid var(--gray-500);
     }
+
+    .generating-state {
+        border: 2px solid var(--primary-color);
+    }
 }
 
 /* Reduced motion support */
@@ -495,7 +633,8 @@ step2-image {
     .step2-image-preview-section,
     .step2-image-img,
     .step2-image-img-loading::before,
-    .step2-image-status.loading::before {
+    .step2-image-status.loading::before,
+    .generating-text::before {
         animation: none;
         transition: none;
     }
@@ -505,7 +644,8 @@ step2-image {
     .step2-image-btn-skip:hover,
     .step2-image-btn-regenerate:hover,
     .step2-image-btn-continue:hover,
-    .step2-image-error-btn:hover {
+    .step2-image-error-btn:hover,
+    .btn-cancel:hover {
         transform: none;
     }
 
@@ -537,5 +677,9 @@ step2-image {
     .step2-image-img {
         max-height: none;
         page-break-inside: avoid;
+    }
+
+    .generating-state {
+        display: none;
     }
 }

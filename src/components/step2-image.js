@@ -17,7 +17,8 @@ class Step2Image extends LitElement {
         showInput:     { type: Boolean, state: true },
         showPreview:   { type: Boolean, state: true },
         isGenerating:  { type: Boolean, state: true },
-        isInitialized: { type: Boolean, state: true }
+        isInitialized: { type: Boolean, state: true },
+        currentAction:  { type: String, state: true }
     };
 
     createRenderRoot() {
@@ -35,6 +36,7 @@ class Step2Image extends LitElement {
         this.isInitialized = false;
         this.operation = null;
         this.loadingToastId = null;
+        this.currentAction = null;
     }
 
     disconnectedCallback() {
@@ -86,31 +88,46 @@ class Step2Image extends LitElement {
         });
     }
 
-    async handleGenerate() {
-        if (this.isGenerating) {
-            this.operation?.cancel();
-            this.isGenerating = false;
-            // Hide loading toast if canceling
-            if (this.loadingToastId) {
-                toast.hide(this.loadingToastId);
-                this.loadingToastId = null;
-            }
-            return;
+    handleCancel() {
+        console.log('🖼️ handleCancel called');
+        console.log('🖼️ Current operation:', this.operation);
+        console.log('🖼️ isGenerating:', this.isGenerating);
+
+        if (this.operation) {
+            console.log('🖼️ Calling operation.cancel()');
+            this.operation.cancel();
+            console.log('🖼️ operation.cancel() completed');
+        } else {
+            console.log('🖼️ No operation to cancel');
         }
+    }
+
+    async handleGenerate() {
         if (!this.story) return;
         await this.performGeneration();
     }
 
     async performGeneration() {
         this.operation = createAbortableOperation();
+        this.currentAction = 'Preparing image generation...';
         this.isGenerating = true;
         this.loadingToastId = toast.loading('Generating image…');
 
         try {
-            const result = await this.operation.execute(generateImage, this.story.content);
-            console.log("step2 image.js: Generated image result:", result);
+            // Update status during generation
+            this.currentAction = '🎨 Creating your story illustration...';
 
-            if(result?.imageBlob){
+            const result = await this.operation.execute((signal) => {
+                // You could pass a status callback to generateImage if it supports it
+                return generateImage(this.story.content, signal);
+            });
+
+            console.log("Generated image result:", result);
+
+            if (result?.imageBlob) {
+                this.currentAction = '💾 Saving generated image...';
+                this.requestUpdate();
+
                 this.showPreview = true;
                 await saveStoryImage(this.story.id, result.imageBlob);
                 this.imageUrl = URL.createObjectURL(result.imageBlob);
@@ -131,12 +148,15 @@ class Step2Image extends LitElement {
 
             if (err.name === 'AbortError') {
                 toast.info('Image generation cancelled.');
+                this.currentAction = 'Image generation cancelled';
             } else {
                 console.error(err);
                 toast.error('Error generating image. Please try again.');
+                this.currentAction = 'Image generation failed';
             }
         } finally {
             this.isGenerating = false;
+            this.currentAction = null;
             this.operation = null;
         }
     }
@@ -257,44 +277,43 @@ class Step2Image extends LitElement {
     renderInputSection() {
         if (!this.showInput) return '';
         return html`
-            <div
-                    class="step2-image-input-section"
-                    title="Choose to generate or skip an image"
-            >
+            <div class="step2-image-input-section" title="Choose to generate or skip an image">
                 <p title="Generate an AI image illustrating your story">
                     Do you want to generate an image for your story?
                 </p>
-                <div
-                        class="step2-image-actions"
-                        aria-label="Image actions"
-                >
-                    <button
-                            class="step2-image-btn-generate"
-                            @click=${this.handleGenerate}
-                            ?disabled=${this.isGenerating}
-                            title="Generate an AI image based on your story"
-                    >
-                        ${this.isGenerating ? 'Generating…' : 'Generate Image'}
-                    </button>
-                    ${this.isGenerating
-                            ? html`
+                <div class="step2-image-actions" aria-label="Image actions">
+                    ${this.isGenerating ? html`
+                        <!-- Show status and cancel when generating -->
+                        <div class="generating-state">
+                            <span class="generating-text">
+                                ${this.currentAction || 'Processing...'}
+                            </span>
                             <button
-                                class="step2-image-btn-cancel"
-                                @click=${this.handleGenerate}
+                                type="button"
+                                class="btn-cancel"
+                                @click=${this.handleCancel}
                                 title="Cancel image generation"
                             >
                                 Cancel
                             </button>
-                        `
-                            : ''}
-                    <button
+                        </div>
+                    ` : html`
+                        <!-- Show normal buttons when not generating -->
+                        <button
+                            class="step2-image-btn-generate"
+                            @click=${this.handleGenerate}
+                            title="Generate an AI image based on your story"
+                        >
+                            Generate Image
+                        </button>
+                        <button
                             class="step2-image-btn-skip"
                             @click=${this.handleSkip}
-                            ?disabled=${this.isGenerating}
                             title="Skip image generation"
-                    >
-                        Skip Image
-                    </button>
+                        >
+                            Skip Image
+                        </button>
+                    `}
                 </div>
             </div>
         `;
@@ -302,48 +321,46 @@ class Step2Image extends LitElement {
 
     renderPreviewSection() {
         return html`
-            <div
-                    class="step2-image-preview-section"
-                    title="Preview of generated image"
-                    aria-label="Image preview"
-            >
+            <div class="step2-image-preview-section" title="Preview of generated image" aria-label="Image preview">
                 <img
-                        class="step2-image-img"
-                        src=${this.imageUrl}
-                        alt="Generated story image"
-                        title="Generated story image"
+                    class="step2-image-img"
+                    src=${this.imageUrl}
+                    alt="Generated story image"
+                    title="Generated story image"
                 />
-                <div
-                        class="step2-image-actions"
-                        aria-label="Image actions"
-                >
-                    <button
+                <div class="step2-image-actions" aria-label="Image actions">
+                    ${this.isGenerating ? html`
+                        <!-- Show status and cancel when regenerating -->
+                        <div class="generating-state">
+                            <span class="generating-text">
+                                ${this.currentAction || 'Processing...'}
+                            </span>
+                            <button
+                                type="button"
+                                class="btn-cancel"
+                                @click=${this.handleCancel}
+                                title="Cancel image regeneration"
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    ` : html`
+                        <!-- Show normal buttons when not generating -->
+                        <button
                             class="step2-image-btn-regenerate"
                             @click=${this.performGeneration}
-                            ?disabled=${this.isGenerating}
                             title="Regenerate image"
-                    >
-                        ${this.isGenerating ? 'Generating…' : 'Regenerate Image'}
-                    </button>
-                    ${this.isGenerating
-                            ? html`
-                                <button
-                                        class="step2-image-btn-cancel"
-                                        @click=${this.handleGenerate}
-                                        title="Cancel image regeneration"
-                                >
-                                    Cancel
-                                </button>
-                            `
-                            : ''}
-                    <button
+                        >
+                            Regenerate Image
+                        </button>
+                        <button
                             class="step2-image-btn-continue"
                             @click=${this.handleContinue}
-                            ?disabled=${this.isGenerating}
                             title="Continue to the next step"
-                    >
-                        Continue with This Image
-                    </button>
+                        >
+                            Continue with This Image
+                        </button>
+                    `}
                 </div>
             </div>
         `;
